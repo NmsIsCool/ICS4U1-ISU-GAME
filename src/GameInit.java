@@ -4,9 +4,9 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class PossibilityOfPrecipitationLauncher extends StateBasedGame {
+public class GameInit extends StateBasedGame {
 
-    public PossibilityOfPrecipitationLauncher(String title) {
+    public GameInit(String title) {
         super(title);
     }
     
@@ -16,7 +16,7 @@ public class PossibilityOfPrecipitationLauncher extends StateBasedGame {
 
     public static void main(String args[]) throws SlickException {
         
-        PossibilityOfPrecipitationLauncher game = new PossibilityOfPrecipitationLauncher("Testing Game");
+        GameInit game = new GameInit("Testing Game");
         AppGameContainer app = new AppGameContainer(game);
         app.setDisplayMode(800, 600, false);
         app.setShowFPS(false);
