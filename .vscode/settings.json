@@ -1,0 +1,18 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+
+    "java.project.outputPath": "bin",
+
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "lib/jinput.jar",
+        "lib/lwjgl.jar",
+        "lib/lwjgl_util.jar",
+        "lib/slick.jar",
+    ],
+
+    "java.debug.settings.vmArgs": "-Djava.library.path=lib/windowsdll",
+
+}
