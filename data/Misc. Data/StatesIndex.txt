@@ -1,27 +1,21 @@
 States Index
 
-Basic:
-0 - Intro Screen
-01- Class Select
-02 - Instructions - Controls
-03 - Instructions - Game objective
-10 - Settings
-
-Settings: - 1x
-10 - Main Page
-11- Cheat Codes
-12 - Audio
-13 - Controls
-14 - Debug Menu
-
-Gameplay - 2x - 4x MAYBE REDUCE
-20 - Start Phase
-21 - World
-60 - Dungeon Hub
-
-Dungeons - 5x-8x MAYBE EXPAND
-60 - Dungeon Hub
-61 - First Dungeon Floor
+Menus - 0x
+Main Page - 0
+Settings - 10
+Instructions: Controls - 01
+Instructions: Game Objective - 02
+Main Game Inside - 20
 
 
+Menus - Settings - 1x
+Home Page - 10
+Audio - 11
+Controls Mapping - 12
+
+GamePlay - 2x
+Inside - 20
+Outside - 21
+Game End Screen - 22
+Restart Re-Spec Screen - 23
 
