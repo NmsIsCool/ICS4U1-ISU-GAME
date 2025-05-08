@@ -7,7 +7,6 @@ Instructions: Controls - 01
 Instructions: Game Objective - 02
 Main Game Inside - 20
 
-
 Menus - Settings - 1x
 Home Page - 10
 Audio - 11

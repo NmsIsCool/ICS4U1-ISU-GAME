@@ -16,7 +16,7 @@ public class GameInit extends StateBasedGame {
 
     public static void main(String args[]) throws SlickException {
         
-        GameInit game = new GameInit("Testing Game");
+        GameInit game = new GameInit("Fosh");
         AppGameContainer app = new AppGameContainer(game);
         app.setDisplayMode(800, 600, false);
         app.setShowFPS(false);
