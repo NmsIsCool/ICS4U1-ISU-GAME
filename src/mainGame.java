@@ -16,9 +16,6 @@ public class mainGame extends BasicGameState {
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException { 
         Input in=gc.getInput();
-        if(in.isKeyDown(Input.KEY_SPACE)){
-            
-        }
         player.move(in);
          
         

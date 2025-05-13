@@ -1,7 +1,6 @@
 import org.newdawn.slick.geom.*;
 import org.newdawn.slick.*;
-import java.util.ArrayList;
-
+@SuppressWarnings("unused")
 public class Fisher {
     SpriteSheet walkSheet;
     SpriteSheet castSheet;
