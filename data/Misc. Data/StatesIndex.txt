@@ -1,10 +1,11 @@
 States Index
 
 Menus - 0x
-Main Page - 0
+Intro Screen - 0
+Main Page - 01
 Settings - 10
-Instructions: Controls - 01
-Instructions: Game Objective - 02
+Instructions: Controls - 02
+Instructions: Game Objective - 03
 Main Game Inside - 20
 
 Menus - Settings - 1x
