@@ -26,7 +26,10 @@ public class GameInit extends StateBasedGame {
         app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
         app.setShowFPS(true);
         app.setTargetFrameRate(200);
-        app.setIcon("data/assets/icon.png");
+        app.setIcons(new String[]{
+            "data/assets/icon16.png",
+            "data/assets/icon.png",
+        });
         app.start();
 
     }
