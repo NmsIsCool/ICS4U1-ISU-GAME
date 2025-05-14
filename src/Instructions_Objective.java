@@ -6,32 +6,26 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class IntroScreen extends BasicGameState {
-
-    Image introImage;
+public class Instructions_Objective extends BasicGameState {
+    private Image OBJECTIVE_INSTRUCTIONS;
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        introImage=new Image("data/assets/intro.png");
+       
+       OBJECTIVE_INSTRUCTIONS = new Image("data/assets/Instructions_Objective.png");
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException { 
-       Input in=gc.getInput();
-       if(in.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
-            mainGame.debug=false;
-           sbg.enterState(1);
-       }
-       if(in.isKeyPressed(Input.KEY_BACKSLASH)){
-            mainGame.debug=true;
-            sbg.enterState(1);
-       }
-        
+        Input in=gc.getInput();
+        if(in.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+            sbg.enterState(20); //enter main game
+        }
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        g.drawImage(introImage,0,0);
+       g.drawImage(OBJECTIVE_INSTRUCTIONS,0,0);
     }
     
     public int getID() {
-       return 0;  //this id will be different for each screen
+       return 2;  //this id will be different for each screen
     }
 
     

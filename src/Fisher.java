@@ -101,7 +101,7 @@ public class Fisher {
             stopcast = true;
             castAnim[dir].stop();
             idleImage[dir].draw(x, y);
-            System.out.println("Bobber stopped");
+            mainGame.debugOutput("Bobber Stopped");
             fishMinigame = true;
         }
         hitbox.setX(x);

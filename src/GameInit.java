@@ -13,8 +13,10 @@ public class GameInit extends StateBasedGame {
     }
     
     public void initStatesList(GameContainer gc) throws SlickException {
-       this.addState(new IntroScreen());
-       this.addState(new mainGame());
+       this.addState(new IntroScreen()); //0
+       this.addState(new mainGame()); //20
+       this.addState(new Instructions_Gameplay()); //1
+       this.addState(new Instructions_Objective()); //2
     }
 
     public static void main(String args[]) throws SlickException {
@@ -24,6 +26,7 @@ public class GameInit extends StateBasedGame {
         app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
         app.setShowFPS(true);
         app.setTargetFrameRate(200);
+        app.setIcon("data/assets/icon.png");
         app.start();
 
     }

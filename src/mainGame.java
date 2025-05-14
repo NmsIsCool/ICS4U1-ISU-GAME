@@ -18,13 +18,18 @@ public class mainGame extends BasicGameState {
         Input in=gc.getInput();
         player.move(in);
          
-        
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
        player.draw();
        g.setColor(Color.green);
        if(debug) g.drawString("DEBUG MODE", 10,50);
+    }
+
+    public static void debugOutput(String output){
+      if(debug){
+         System.out.println(output);
+      }
     }
     
     public int getID() {
