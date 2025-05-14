@@ -11,7 +11,7 @@ public class mainGame extends BasicGameState {
     public static boolean debug=false;
     Fisher player;
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-       player=new Fisher(960,540);
+       player=new Fisher(64*8, (int)(64*4.5));
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException { 
