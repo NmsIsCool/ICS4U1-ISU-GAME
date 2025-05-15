@@ -1,5 +1,6 @@
 import org.newdawn.slick.geom.*;
 import org.newdawn.slick.*;
+
 @SuppressWarnings("unused")
 public class Fisher {
     SpriteSheet walkSheet;
@@ -14,7 +15,7 @@ public class Fisher {
     boolean stop = false, stopcast = true;
     private Rectangle hitbox;
     private boolean casting = false, holdingcast = false, idlebobber = false;
-    private boolean fishMinigame=false;
+    private boolean fishMinigame = false;
 
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
@@ -75,11 +76,13 @@ public class Fisher {
         }
 
         // allow functionality for holding cast
-        //if space is held and bobber not idle, start holding cast
+        // if space is held and bobber not idle, start holding cast
         if (kb.isKeyDown(Input.KEY_SPACE) && !idlebobber) {
             holdingcast = true;
-        } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if key space is not held and cast is being held, 
-            holdingcast = false;                                            //play cast animation at frame 3 and set bobber to idle
+        } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if
+                                                                            // key space is not held and cast is being
+                                                                            // held,
+            holdingcast = false; // play cast animation at frame 3 and set bobber to idle
             stopcast = false;
             casting = true;
 
@@ -87,11 +90,12 @@ public class Fisher {
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
             idlebobber = true;
-        //if key space is not held and player is not casting and not holding cast, stop animation and draw fishing idle frame
+            // if key space is not held and player is not casting and not holding cast, stop
+            // animation and draw fishing idle frame
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && !casting && !holdingcast) {
             stopcast = true;
             casting = false;
-        //if key p is pressed and bobber is idle, stop bobber and start idle frame
+            // if key p is pressed and bobber is idle, stop bobber and start idle frame
         }
         if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && idlebobber) {
             idlebobber = false;
