@@ -14,7 +14,7 @@ public class Fisher {
     int dir = 3; // 0=U, 1=L, 2=D, 3=R;
     boolean stop = false, stopcast = true;
     private Rectangle hitbox;
-    private boolean casting = false, holdingcast = false, idlebobber = false;
+    public boolean casting = false, holdingcast = false, idlebobber = false;
     private boolean fishMinigame = false;
 
     public Fisher(int x, int y) throws SlickException {
@@ -59,16 +59,16 @@ public class Fisher {
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
         // control movement while not holding cast
-        if (kb.isKeyDown(Input.KEY_D) && !holdingcast) {
+        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber) {
             x++;
             dir = 3;
-        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast) {
+        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber) {
             x--;
             dir = 1;
-        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast) {
+        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber) {
             y--;
             dir = 0;
-        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast) {
+        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber) {
             y++;
             dir = 2;
         } else {
@@ -89,7 +89,7 @@ public class Fisher {
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
-            idlebobber = true;
+
             // if key space is not held and player is not casting and not holding cast, stop
             // animation and draw fishing idle frame
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && !casting && !holdingcast) {
@@ -147,5 +147,13 @@ public class Fisher {
             castAnim[dir].stop();
             walkAnim[dir].stop();
         }
+    }
+
+    public int getX() {
+        return (int) hitbox.getX();
+    }
+
+    public int getY() {
+        return (int) hitbox.getY();
     }
 }

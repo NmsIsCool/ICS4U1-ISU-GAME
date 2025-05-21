@@ -9,23 +9,34 @@ import org.newdawn.slick.state.StateBasedGame;
 public class mainGame extends BasicGameState {
 
    public static boolean debug = false;
-   Fisher player;
+   static Fisher player;
+   Bobber bobber;
+   
 
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
       player = new Fisher(64 * 8, (int) (64 * 4.5));
+      bobber=new Bobber(800,200,0,0);
+      
    }
 
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
       player.move(in);
+      bobber.move();
+     
+      
 
    }
 
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       player.draw();
+      bobber.draw(g);
       g.setColor(Color.green);
-      if (debug)
+      if (debug) {
          g.drawString("DEBUG MODE", 10, 50);
+      }
+      g.setColor(Color.white);
+      
    }
 
    public static void debugOutput(String output) {

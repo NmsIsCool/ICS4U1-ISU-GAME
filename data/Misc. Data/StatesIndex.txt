@@ -16,5 +16,4 @@ GamePlay - 2x
 Inside - 20
 Outside - 21
 Game End Screen - 22
-Restart Re-Spec Screen - 23
 
