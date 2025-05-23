@@ -1,0 +1,14 @@
+Table to determine quality based off of distance score.
+
+0-0.39:
+    trash - 100%
+
+0.4-0.49:
+    minor fish - 75%
+    trash - 25%
+
+0.5-0.69:
+    mediocre fish - 50%
+    minor fish: 40%
+    trash: 10%
+

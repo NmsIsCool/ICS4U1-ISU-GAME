@@ -13,6 +13,7 @@ public class Bobber {
     int vel;
     Image bobberImage;
     int playerX, playerY;
+    int toAddY=0, toAddX=0;
 
     public Bobber(int origx, int origy, int direction, int velocity) throws SlickException {
         bobberImage = new Image("data/assets/bobber.png");
@@ -26,7 +27,7 @@ public class Bobber {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
         mainGame.debugOutput("Positions:" +playerX +" | " +playerY);
-        if (vel > 0) {
+        /*if (vel > 0) {
             if (dir == 0) {
                 y -= vel;
             } else if (dir == 1) {
@@ -36,7 +37,7 @@ public class Bobber {
             } else if (dir == 3) {
                 x += vel;
             }
-        }
+        }*/
         vel -= 5;
 
     }
@@ -50,4 +51,46 @@ public class Bobber {
             g.draw(fishingLine);
         }
     }
-}
+
+    public void calculateCastDist(){
+        toAddY=0;
+        toAddX=0;
+        for(vel++; vel>0; vel-=5){
+            //control the distance of the bobber in the Y axis
+            if(dir==0){// UP
+                toAddY-=vel;
+            }else if(dir==2){// DOWN
+                toAddY+=vel;
+            }
+            //X axis
+            else if(dir==1){ //LEFT
+                toAddX-=vel;
+            }else if(dir==3){ //RIGHT
+                toAddX+=vel;
+            }
+        }
+        x+=toAddX;
+        y+=toAddY;
+    }
+
+    public double calculateDistance(){
+        //bobber positions
+        int x1=x;
+        int y1=y;
+
+        //player positions
+        int x2=mainGame.player.getX();
+        int y2=mainGame.player.getY();
+
+        //calculate distance with formula D=sqrt((x2-x1)^2+(y2-y1)^2)
+        double distance=Math.sqrt(Math.pow((x2-x1),2)+Math.pow((y2-y1),2));
+        return distance;
+    }
+
+    public float getQualityScore(){
+        //quality score is calculated as a percentage of the distance covered between the edge of the dock and the edge of the map left as a decimal
+        return (float) ((calculateDistance()/384));
+
+    }
+
+    }
