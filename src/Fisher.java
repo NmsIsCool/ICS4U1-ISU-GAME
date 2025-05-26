@@ -149,6 +149,14 @@ public class Fisher {
         }
     }
 
+    public int getCastVelocity() {
+        return 50; //TODO: implement cast velocity minigame
+    }
+
+    public int getDir(){
+        return dir;
+    }
+
     public int getX() {
         return (int) hitbox.getX();
     }

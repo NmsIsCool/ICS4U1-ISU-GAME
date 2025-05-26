@@ -9,6 +9,26 @@ Table to determine quality based off of distance score.
 
 0.5-0.69:
     mediocre fish - 50%
-    minor fish: 40%
-    trash: 10%
+    minor fish - 30%
+    trash - 20%
+
+0.7-0.79:
+    large fish - 40%
+    mediocre fish - 25%
+    minor fish - 20%
+    trash - 15%
+
+0.8-0.94:
+    large fish - 55%
+    mediocre fish - 35%
+    minor fish - 9%
+    mythic fish - 1%
+
+0.95 - 1:
+    Mythic fish - 15%
+    large fish - 30%
+    mediocre fish - 45%
+    minor fish - 9%
+    RNGesus fish - 1%
+
 

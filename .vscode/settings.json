@@ -5,6 +5,7 @@
 
     "java.project.outputPath": "bin",
 
+    //reference needed libraries
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "lib/jinput.jar",
@@ -12,7 +13,7 @@
         "lib/lwjgl_util.jar",
         "lib/slick.jar",
     ],
-
-    "java.debug.settings.vmArgs": "-Djava.library.path=lib/windowsdll",
+    //set windowsdll path for lwjgl, allow for more memory to be used as well as a larger initial heap size
+    "java.debug.settings.vmArgs": "-Djava.library.path=lib/windowsdll -Xmx1G -Xms16M",
 
 }
