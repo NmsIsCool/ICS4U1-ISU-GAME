@@ -10,7 +10,7 @@ public class IntroScreen extends BasicGameState {
 
     Image introImage;
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        introImage=new Image("data/assets/intro.png");
+        introImage=new Image("data/assets/images/intro.png");
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException { 

@@ -17,7 +17,7 @@ public class Bobber {
 
     //bobber constructor
     public Bobber(int origx, int origy, int direction, int velocity) throws SlickException {
-        bobberImage = new Image("data/assets/bobber.png");
+        bobberImage = new Image("data/assets/images/bobber.png");
         x = origx;
         y = origy;
         dir = direction;

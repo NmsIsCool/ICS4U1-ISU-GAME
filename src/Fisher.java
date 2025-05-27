@@ -24,8 +24,8 @@ public class Fisher {
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
         this.y = y;
-        walkSheet = new SpriteSheet("data/assets/walk.png", 64, 64);
-        castSheet = new SpriteSheet("data/assets/tool_rod.png", 128, 128);
+        walkSheet = new SpriteSheet("data/assets/images/walk.png", 64, 64);
+        castSheet = new SpriteSheet("data/assets/images/tool_rod.png", 128, 128);
 
         walkSheet.startUse();
         for (int i = 0; i < 4; i++) {
@@ -100,7 +100,7 @@ public class Fisher {
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && !casting && !holdingcast) {
             stopcast = true;
             casting = false;
-            // if key p is pressed and bobber is idle, stop bobber and start idle frame
+            // if key LMB pressed is pressed and bobber is idle, stop bobber and start idle frame
         }
         if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && idlebobber) {
             idlebobber = false;
@@ -119,8 +119,8 @@ public class Fisher {
 
     //draw player and animations based on boolean triggers
     public void draw(Graphics g) {
-        float drawX = hitbox.getX() - 12;
-        float drawY = hitbox.getY() - 12;
+        float drawX = hitbox.getX()-16;
+        float drawY = hitbox.getY() - 10;
 
         // Draw holding cast frame
         if (holdingcast && stop) {

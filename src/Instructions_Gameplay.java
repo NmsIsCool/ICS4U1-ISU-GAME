@@ -12,7 +12,7 @@ public class Instructions_Gameplay extends BasicGameState {
     long dt = 0;
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        GAMEPLAY_INSTRUCTIONS = new Image("data/assets/Instructions_Gameplay.png");
+        GAMEPLAY_INSTRUCTIONS = new Image("data/assets/images/Instructions_Gameplay.png");
 
     }
 

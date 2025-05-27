@@ -11,7 +11,7 @@ public class Instructions_Objective extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
-        OBJECTIVE_INSTRUCTIONS = new Image("data/assets/Instructions_Objective.png");
+        OBJECTIVE_INSTRUCTIONS = new Image("data/assets/images/Instructions_Objective.png");
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {

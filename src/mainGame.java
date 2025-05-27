@@ -5,7 +5,10 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.Sound;
+import org.newdawn.slick.Music;
 
+@SuppressWarnings("unused")
 public class mainGame extends BasicGameState {
 
    public static boolean debug = true;
@@ -16,7 +19,8 @@ public class mainGame extends BasicGameState {
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
       player = new Fisher(64 * 8, (int) (64 * 4.5));
       bobber = new Bobber(800, 200, 0, 0);
-
+      Music bgmusic =new Music("data/assets/audio/waves.wav");
+      bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume
    }
 
    //run updates and check inputs every frame
