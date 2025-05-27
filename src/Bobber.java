@@ -76,7 +76,7 @@ public class Bobber {
     public double calculateDistance() {
         // bobber positions
         int x1 = x;
-        int y1 = y;
+        int y1 = y; 
 
         // player positions
         int x2 = mainGame.player.getX();
