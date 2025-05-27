@@ -15,6 +15,7 @@ public class Bobber {
     int playerX, playerY;
     int toAddY = 0, toAddX = 0;
 
+    //bobber constructor
     public Bobber(int origx, int origy, int direction, int velocity) throws SlickException {
         bobberImage = new Image("data/assets/bobber.png");
         x = origx;
@@ -23,6 +24,7 @@ public class Bobber {
         vel = velocity;
     }
 
+    //draw bobber and fishing line - line position is determined by player direction
     public void draw(Graphics g) throws SlickException {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
@@ -43,9 +45,10 @@ public class Bobber {
 
     }
 
+    //based on velocity from casting minigame, change position based on velocity
     public void calculateCastDist() {
-        x = mainGame.player.getX() + 82;
-        y = mainGame.player.getY() + 28;
+        x = mainGame.player.getX();
+        y = mainGame.player.getY();
         vel = mainGame.player.getCastVelocity();
         dir = mainGame.player.getDir();
 
@@ -69,6 +72,7 @@ public class Bobber {
         y += toAddY;
     }
 
+    //get distance between bobber and player, used to calculate quality score
     public double calculateDistance() {
         // bobber positions
         int x1 = x;
@@ -83,10 +87,11 @@ public class Bobber {
         return distance;
     }
 
+    //return quality score based on distance casted and distance from edge of map. If score is greater than 1, return 1
     public float getQualityScore() {
         // quality score is calculated as a percentage of the distance covered between
         // the edge of the dock and the edge of the map left as a decimal
-        return (float) ((calculateDistance() / 384));
+        return  ((calculateDistance()/384)>1) ? 1 : (float) (calculateDistance() / 384);
 
     }
 

@@ -3,6 +3,8 @@ import org.newdawn.slick.*;
 
 @SuppressWarnings("unused")
 public class Fisher {
+
+    //declare variables/objects
     SpriteSheet walkSheet;
     SpriteSheet castSheet;
     Animation castAnim[] = new Animation[12];
@@ -16,7 +18,9 @@ public class Fisher {
     private Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
     private boolean fishMinigame = false;
+    
 
+    //object contructor, create player and animations from sprite sheets
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
         this.y = y;
@@ -48,11 +52,12 @@ public class Fisher {
         }
         castSheet.endUse();
 
-        hitbox = new Rectangle(x, y, 32, 32);
+        hitbox = new Rectangle(x, y, 32, 64);
         stop = true;
         dir = 3;
     }
 
+    //controls player movement and casting
     public void move(Input kb) throws SlickException {
         stop = false;
         int x = (int) hitbox.getX();
@@ -108,11 +113,12 @@ public class Fisher {
             mainGame.debugOutput("Bobber Stopped");
             fishMinigame = true;
         }
-        hitbox.setX(x);
+        hitbox.setX((x));
         hitbox.setY(y);
     }
 
-    public void draw() {
+    //draw player and animations based on boolean triggers
+    public void draw(Graphics g) {
         float drawX = hitbox.getX() - 12;
         float drawY = hitbox.getY() - 12;
 
@@ -147,8 +153,13 @@ public class Fisher {
             castAnim[dir].stop();
             walkAnim[dir].stop();
         }
+
+        if(mainGame.debug){
+            g.draw(hitbox);
+        }
     }
 
+    // Getters for various properties
     public int getCastVelocity() {
         return 50; //TODO: implement cast velocity minigame
     }

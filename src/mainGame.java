@@ -8,29 +8,32 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class mainGame extends BasicGameState {
 
-   public static boolean debug = false;
+   public static boolean debug = true;
    static Fisher player;
    Bobber bobber;
 
+   //initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
       player = new Fisher(64 * 8, (int) (64 * 4.5));
       bobber = new Bobber(800, 200, 0, 0);
 
    }
 
+   //run updates and check inputs every frame
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
       player.move(in);
 
       //get memory while debug mode active for ensuring memory usage is in check. Should rarely be an issue.
-      if(in.isKeyDown(Input.KEY_M) && debug){
+      if(in.isKeyDown(Input.KEY_M)){
          getMem();
       }
 
    }
 
+   //render needed objects every frame
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-      player.draw();
+      player.draw(g);
 
       if (player.casting) {
          bobber.draw(g);
@@ -52,21 +55,27 @@ public class mainGame extends BasicGameState {
 
    }
 
+   //return ID for SBG
    public int getID() {
       return 20; // this id will be different for each screen
    }
 
-   //debug methods
+   //DEBUG METHODS
+
+   //output debug messages to console if debug mode is active
    public static void debugOutput(String output) {
       if (debug) {
          System.out.println(output);
       }
    }
 
+   //output current memory usage to console - should rarely be a problem but its cool
    public static void getMem(){
+      if(debug){
       Runtime runtime = Runtime.getRuntime();
       long memory = runtime.totalMemory() - runtime.freeMemory();
       System.out.println("Used memory: " + memory / (1024*1024) + " MB");
+      }
    }
 
    
