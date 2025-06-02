@@ -10,10 +10,11 @@ public class Bobber {
     int x = 0;
     int y = 0;
     int dir = 0; // 0=U, 1=L, 2=D, 3=R;
-    int vel;
+    float vel;
     Image bobberImage;
     int playerX, playerY;
     int toAddY = 0, toAddX = 0;
+
 
     //bobber constructor
     public Bobber(int origx, int origy, int direction, int velocity) throws SlickException {
@@ -38,7 +39,14 @@ public class Bobber {
         } else if (mainGame.player.idlebobber && mainGame.player.dir == 1) { // LEFT
             Line fishingLine = new Line(playerX - 41, playerY + 26, x + 8, y + 4);
             g.draw(fishingLine);
+        }else if(mainGame.player.idlebobber && mainGame.player.dir==2){ //DOWN
+            Line fishingLine=new Line(playerX+45, playerY+25, x+4, y+8);
+            g.draw(fishingLine);
+        }else if(mainGame.player.idlebobber && mainGame.player.dir==0){ //UP
+            Line fishingLine=new Line(playerX+60, playerY, x+4, y+8);
+            g.draw(fishingLine);
         }
+
 
         
 
@@ -48,8 +56,8 @@ public class Bobber {
     //based on velocity from casting minigame, change position based on velocity
     public void calculateCastDist() {
         x = mainGame.player.getX();
-        y = mainGame.player.getY();
-        vel = mainGame.player.getCastVelocity();
+        y = mainGame.player.getY() +32;
+        vel = mainGame.castGame.getCastVelocity();
         dir = mainGame.player.getDir();
 
         toAddY = 0;

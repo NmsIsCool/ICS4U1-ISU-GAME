@@ -64,16 +64,16 @@ public class Fisher {
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
         // control movement while not holding cast
-        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber) {
+        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
             x++;
             dir = 3;
-        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber) {
+        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
             x--;
             dir = 1;
-        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber) {
+        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
             y--;
             dir = 0;
-        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber) {
+        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
             y++;
             dir = 2;
         } else {
@@ -160,9 +160,9 @@ public class Fisher {
     }
 
     // Getters for various properties
-    public int getCastVelocity() {
+    /*public int getCastVelocity() {
         return 50; //TODO: implement cast velocity minigame
-    }
+    }*/
 
     public int getDir(){
         return dir;
