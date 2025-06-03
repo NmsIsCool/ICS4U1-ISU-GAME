@@ -9,7 +9,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({"unused"})
 
 public class castGame {
     boolean holdingCast = false;
@@ -43,10 +43,11 @@ public class castGame {
 
     public float getCastVelocity() {
         //returns velocity as a float based on the percent the ticker has progressed the cast game bar
-        if (ticker < 100) {
+        /*if (ticker < 100) {
             return ticker / 100f * 50; // Example: max velocity of 50
         } else {
             return 50; // Default max velocity if ticker exceeds 100
-        }
+        }*/
+        return 35+mainGame.player.varyDist; // Placeholder for cast velocity, can be adjusted or calculated based on game logic
     }
 }

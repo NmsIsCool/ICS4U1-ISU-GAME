@@ -1,68 +1,62 @@
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Line;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class Bobber {
     int x = 0;
     int y = 0;
     int dir = 0; // 0=U, 1=L, 2=D, 3=R;
-    float vel;
+    float vel = 0;
     Image bobberImage;
     int playerX, playerY;
     int toAddY = 0, toAddX = 0;
 
-
-    //bobber constructor
-    public Bobber(int origx, int origy, int direction, int velocity) throws SlickException {
+    // bobber constructor
+    public Bobber() throws SlickException {
         bobberImage = new Image("data/assets/images/bobber.png");
-        x = origx;
-        y = origy;
-        dir = direction;
-        vel = velocity;
+
     }
 
-    //draw bobber and fishing line - line position is determined by player direction
+    // draw bobber and fishing line - line position is determined by player
+    // direction
     public void draw(Graphics g) throws SlickException {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
 
         g.drawImage(bobberImage, x, y);
-        g.setColor(Color.red);
+        g.setColor(Color.red); // TODO: Change fishing line color to not red, later tho i need to be able to see it :/
 
+        // adjust fishing line position to align with sprite in each direction
         if (mainGame.player.idlebobber && mainGame.player.dir == 3) { // RIGHT
             Line fishingLine = new Line(playerX + 82, playerY + 28, x + 4, y + 8);
             g.draw(fishingLine);
         } else if (mainGame.player.idlebobber && mainGame.player.dir == 1) { // LEFT
             Line fishingLine = new Line(playerX - 41, playerY + 26, x + 8, y + 4);
             g.draw(fishingLine);
-        }else if(mainGame.player.idlebobber && mainGame.player.dir==2){ //DOWN
-            Line fishingLine=new Line(playerX+45, playerY+25, x+4, y+8);
+        } else if (mainGame.player.idlebobber && mainGame.player.dir == 2) { // DOWN
+            Line fishingLine = new Line(playerX + 45, playerY + 25, x + 4, y + 8);
             g.draw(fishingLine);
-        }else if(mainGame.player.idlebobber && mainGame.player.dir==0){ //UP
-            Line fishingLine=new Line(playerX+60, playerY, x+4, y+8);
+        } else if (mainGame.player.idlebobber && mainGame.player.dir == 0) { // UP
+            Line fishingLine = new Line(playerX + 60, playerY, x + 4, y + 8);
             g.draw(fishingLine);
         }
 
-
-        
-
-
     }
 
-    //based on velocity from casting minigame, change position based on velocity
+    // based on velocity from casting minigame, change position based on velocity
     public void calculateCastDist() {
         x = mainGame.player.getX();
-        y = mainGame.player.getY() +32;
-        vel = mainGame.castGame.getCastVelocity();
+        y = mainGame.player.getY() + 24;
+        if (vel == 0)
+            vel = mainGame.castGame.getCastVelocity();
         dir = mainGame.player.getDir();
 
         toAddY = 0;
         toAddX = 0;
-        for (vel++; vel > 0; vel -= 5) {
+        for (vel++; vel >= 0; vel -= 5) {
             // control the distance of the bobber in the Y axis
             if (dir == 0) {// UP
                 toAddY -= vel;
@@ -78,13 +72,15 @@ public class Bobber {
         }
         x += toAddX;
         y += toAddY;
+
+        vel = 0;
     }
 
-    //get distance between bobber and player, used to calculate quality score
+    // get distance between bobber and player, used to calculate quality score
     public double calculateDistance() {
         // bobber positions
         int x1 = x;
-        int y1 = y; 
+        int y1 = y;
 
         // player positions
         int x2 = mainGame.player.getX();
@@ -95,11 +91,12 @@ public class Bobber {
         return distance;
     }
 
-    //return quality score based on distance casted and distance from edge of map. If score is greater than 1, return 1
+    // return quality score based on distance casted and distance from edge of map.
+    // If score is greater than 1, return 1
     public float getQualityScore() {
         // quality score is calculated as a percentage of the distance covered between
         // the edge of the dock and the edge of the map left as a decimal
-        return  ((calculateDistance()/384)>1) ? 1 : (float) (calculateDistance() / 384);
+        return ((calculateDistance() / 384) > 1) ? 1 : (float) (calculateDistance() / 384);
 
     }
 

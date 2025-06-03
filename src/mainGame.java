@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -5,36 +7,40 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.Sound; //TODO: Add sound effects
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 
-@SuppressWarnings({"unused", "deprecation"})
+@SuppressWarnings({"deprecation"})
 public class mainGame extends BasicGameState {
-   private TrueTypeFont ttf=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
+   private TrueTypeFont debugFont=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
    map map;
    public static boolean debug = true;
-   public int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
+   public static int debugCode=2; // 0=primary debug, 1=mapOff, noGrid
    static Fisher player;
    Bobber bobber;
    String coords;
    int mouseX, mouseY;
    static castGame castGame;
+   ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-      player = new Fisher(64 * 8, (int) (64 * 4.5));
-      bobber = new Bobber(800, 200, 0, 0);
+      player = new Fisher(448,60);
+      bobber = new Bobber();
       map = new map();
+      map.initBarriers();
+      barriers = map.getBarriers(); // get barriers from map
       Music bgmusic =new Music("data/assets/audio/waves.wav");
       bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume
       castGame=new castGame();
+
    }
 
    // run updates and check inputs every frame
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
-      player.move(in);
+      player.move(in, barriers);
 
       // get memory while debug mode active for ensuring memory usage is in check.
       // Should rarely be an issue.
@@ -52,8 +58,11 @@ public class mainGame extends BasicGameState {
       
       if(!(debugCode==1))
          map.draw();
-      if (debug && !(debugCode==1))
-         map.grid(g); // draw grid for debugging
+      if (debug && !(debugCode==1)) {
+         map.grid(g); 
+         map.showBarriers(g);
+         // draw grid for debugging when not in code one
+      }
 
       if (player.casting) {
          bobber.draw(g);
@@ -65,8 +74,8 @@ public class mainGame extends BasicGameState {
       // if debug mode is active, draw a message on screen
       g.setColor(Color.blue);
       if (debug) {
-         g.drawString("DEBUG MODE " + debugCode, 10, 50);
-         ttf.drawString(10, 70, getMem() + " MB used",Color.blue);
+         debugFont.drawString(10, 50,"DEBUG MODE " + debugCode, Color.blue);
+         debugFont.drawString(10, 70, getMem() + " MB used",Color.blue);
          coords = "(" + mouseX + ", " + mouseY + ")";
          g.setColor(Color.blue);
          g.drawString(coords, mouseX + 10, mouseY - 10);

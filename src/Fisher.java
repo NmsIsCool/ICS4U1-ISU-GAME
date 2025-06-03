@@ -1,7 +1,8 @@
-import org.newdawn.slick.geom.*;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.*;
+import java.util.ArrayList;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class Fisher {
 
     //declare variables/objects
@@ -18,6 +19,7 @@ public class Fisher {
     private Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
     private boolean fishMinigame = false;
+    public float varyDist=0;
     
 
     //object contructor, create player and animations from sprite sheets
@@ -58,11 +60,11 @@ public class Fisher {
     }
 
     //controls player movement and casting
-    public void move(Input kb) throws SlickException {
+    public void move(Input kb, ArrayList<Rectangle> barriers) throws SlickException {
         stop = false;
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
-        int origx = x, origy = y;
+        int origx = x, origy = y; //TODO: implement barriers to make use of these <--
         // control movement while not holding cast
         if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
             x++;
@@ -80,6 +82,14 @@ public class Fisher {
             stop = true;
         }
 
+        hitbox.setX(x);
+        hitbox.setY(y);
+
+        if(isHitting(barriers) || x>1025-32 || x<0 || y<0){
+            hitbox.setX(origx);
+            hitbox.setY(origy);
+        }
+
         // allow functionality for holding cast
         // if space is held and bobber not idle, start holding cast
         if (kb.isKeyDown(Input.KEY_SPACE) && !idlebobber) {
@@ -91,6 +101,7 @@ public class Fisher {
             stopcast = false;
             casting = true;
 
+            varyDist=(float)Math.random()*10;
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
@@ -100,6 +111,7 @@ public class Fisher {
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && !casting && !holdingcast) {
             stopcast = true;
             casting = false;
+            
             // if key LMB pressed is pressed and bobber is idle, stop bobber and start idle frame
         }
         if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && idlebobber) {
@@ -113,8 +125,17 @@ public class Fisher {
             mainGame.debugOutput("Bobber Stopped");
             fishMinigame = true;
         }
-        hitbox.setX((x));
-        hitbox.setY(y);
+        
+    }
+
+    public boolean isHitting(ArrayList<Rectangle> barriers) {
+        // Check if the player is hitting any barriers
+        for (Rectangle barrier : barriers) {
+            if (hitbox.intersects(barrier)) {
+                return true; // Player is hitting a barrier
+            }
+        }
+        return false; // Player is not hitting any barriers
     }
 
     //draw player and animations based on boolean triggers
