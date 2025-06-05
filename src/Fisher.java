@@ -5,7 +5,7 @@ import java.util.ArrayList;
 //@SuppressWarnings("unused")
 public class Fisher {
 
-    //declare variables/objects
+    // declare variables/objects
     SpriteSheet walkSheet;
     SpriteSheet castSheet;
     Animation castAnim[] = new Animation[12];
@@ -18,11 +18,9 @@ public class Fisher {
     boolean stop = false, stopcast = true;
     private Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
-    private boolean fishMinigame = false;
-    public float varyDist=0;
-    
+    public float varyDist = 0;
 
-    //object contructor, create player and animations from sprite sheets
+    // object contructor, create player and animations from sprite sheets
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
         this.y = y;
@@ -59,12 +57,12 @@ public class Fisher {
         dir = 3;
     }
 
-    //controls player movement and casting
+    // controls player movement and casting
     public void move(Input kb, ArrayList<Rectangle> barriers) throws SlickException {
         stop = false;
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
-        int origx = x, origy = y; //TODO: implement barriers to make use of these <--
+        int origx = x, origy = y;
         // control movement while not holding cast
         if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
             x++;
@@ -85,7 +83,7 @@ public class Fisher {
         hitbox.setX(x);
         hitbox.setY(y);
 
-        if(isHitting(barriers) || x>1025-32 || x<0 || y<0){
+        if (isHitting(barriers) || x > 1025 - 32 || x < 0 || y < 0) {
             hitbox.setX(origx);
             hitbox.setY(origy);
         }
@@ -101,7 +99,7 @@ public class Fisher {
             stopcast = false;
             casting = true;
 
-            varyDist=(float)Math.random()*10;
+            varyDist = (float) Math.random() * 10;
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
@@ -111,8 +109,9 @@ public class Fisher {
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && !casting && !holdingcast) {
             stopcast = true;
             casting = false;
-            
-            // if key LMB pressed is pressed and bobber is idle, stop bobber and start idle frame
+
+            // if key LMB pressed is pressed and bobber is idle, stop bobber and start idle
+            // frame
         }
         if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && idlebobber) {
             idlebobber = false;
@@ -123,9 +122,8 @@ public class Fisher {
             castAnim[dir].stop();
             idleImage[dir].draw(x, y);
             mainGame.debugOutput("Bobber Stopped");
-            fishMinigame = true;
         }
-        
+
     }
 
     public boolean isHitting(ArrayList<Rectangle> barriers) {
@@ -138,9 +136,9 @@ public class Fisher {
         return false; // Player is not hitting any barriers
     }
 
-    //draw player and animations based on boolean triggers
+    // draw player and animations based on boolean triggers
     public void draw(Graphics g) {
-        float drawX = hitbox.getX()-16;
+        float drawX = hitbox.getX() - 16;
         float drawY = hitbox.getY() - 10;
 
         // Draw holding cast frame
@@ -175,17 +173,12 @@ public class Fisher {
             walkAnim[dir].stop();
         }
 
-        if(mainGame.debug){
+        if (mainGame.debug) {
             g.draw(hitbox);
         }
     }
 
-    // Getters for various properties
-    /*public int getCastVelocity() {
-        return 50; //TODO: implement cast velocity minigame
-    }*/
-
-    public int getDir(){
+    public int getDir() {
         return dir;
     }
 
@@ -195,5 +188,17 @@ public class Fisher {
 
     public int getY() {
         return (int) hitbox.getY();
+    }
+
+    public void setPos(int newX, int newY) {
+        if (newX == -1)
+            hitbox.setX(hitbox.getX());
+        else
+            hitbox.setX(newX);
+
+        if (newY == -1)
+            hitbox.setY(hitbox.getY());
+        else
+            hitbox.setY(newY);
     }
 }

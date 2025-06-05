@@ -11,12 +11,12 @@ import org.newdawn.slick.Sound; //TODO: Add sound effects
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 
-@SuppressWarnings({"deprecation"})
+@SuppressWarnings({"deprecation"}) //stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
    private TrueTypeFont debugFont=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
    map map;
-   public static boolean debug = true;
-   public static int debugCode=2; // 0=primary debug, 1=mapOff, noGrid
+   public static boolean debug = false;
+   public static int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
    static Fisher player;
    Bobber bobber;
    String coords;
@@ -26,15 +26,15 @@ public class mainGame extends BasicGameState {
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-      player = new Fisher(448,60);
+      player = new Fisher(960,180);
       bobber = new Bobber();
-      map = new map();
-      map.initBarriers();
+      map = new map("data/assets/images/map.png");
+      map.initBarriersOutside();
+      map.initKeyPointsOutside();
       barriers = map.getBarriers(); // get barriers from map
       Music bgmusic =new Music("data/assets/audio/waves.wav");
       bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume
       castGame=new castGame();
-
    }
 
    // run updates and check inputs every frame
@@ -44,10 +44,12 @@ public class mainGame extends BasicGameState {
 
       // get memory while debug mode active for ensuring memory usage is in check.
       // Should rarely be an issue.
-      if (in.isKeyDown(Input.KEY_M)) {
-         getMem();
-      }
       castGame.update();
+
+      if(player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)){
+         player.setPos(458, 500);
+         sbg.enterState(21);
+      }
    }
 
    // render needed objects every frame
@@ -61,6 +63,7 @@ public class mainGame extends BasicGameState {
       if (debug && !(debugCode==1)) {
          map.grid(g); 
          map.showBarriers(g);
+         map.showKeyPoints(g);
          // draw grid for debugging when not in code one
       }
 
@@ -83,6 +86,7 @@ public class mainGame extends BasicGameState {
       g.setColor(Color.white);
       castGame.drawGame(g);
       player.draw(g);
+      
 
    }
 

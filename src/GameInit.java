@@ -17,6 +17,7 @@ public class GameInit extends StateBasedGame {
         this.addState(new mainGame()); // 20
         this.addState(new Instructions_Gameplay()); // 1
         this.addState(new Instructions_Objective()); // 2
+        this.addState(new House()); //21
     }
 
     public static void main(String args[]) throws SlickException {

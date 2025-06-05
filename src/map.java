@@ -13,12 +13,12 @@ public class map {
     private TrueTypeFont gridFont = new TrueTypeFont(new java.awt.Font("Arial", 1, 12), true);
     Image mapImage;
 
-    public map() throws SlickException {
-        mapImage = new Image("data/assets/images/map.png");
+    public map(String mapPath) throws SlickException {
+        mapImage = new Image(mapPath);
     }
 
-    public void initBarriers() {
-        if (mainGame.debug && !(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
+    public void initBarriersOutside() {
+        if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
             barriers.add(new Rectangle(0, 192, 64 * 2, 64));
             barriers.add(new Rectangle(64, 256, 64, 64 * 2));
             barriers.add(new Rectangle(128, 320, 64 * 2, 64));
@@ -30,6 +30,16 @@ public class map {
             barriers.add(new Rectangle(531, 30, 64 + 24, 36));
             barriers.add(new Rectangle(905, 25, 110, 110));
         }
+    }
+
+    public void initKeyPointsOutside(){
+        keyPoints.add(new Rectangle(905,135,110, 20));
+    }
+
+    public void initBarriersInside(){}
+
+    public void initKeyPointsInside(){
+        keyPoints.add(new Rectangle(384,512,64*3,64));
     }
 
     public void draw() throws SlickException {
@@ -55,8 +65,19 @@ public class map {
         }
     }
 
+    public void showKeyPoints(Graphics g) {
+        g.setColor(Color.yellow);
+        for (Rectangle keyPoint : keyPoints) {
+            g.draw(keyPoint);
+        }
+    }
+
     public ArrayList<Rectangle> getBarriers() {
         return barriers;
+    }
+
+    public ArrayList<Rectangle> getKeyPoints() {
+        return keyPoints;
     }
 
 }
