@@ -15,7 +15,7 @@ import org.newdawn.slick.Music;
 public class mainGame extends BasicGameState {
    private TrueTypeFont debugFont=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
    map map;
-   public static boolean debug = false;
+   public static boolean debug = true;
    public static int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
    static Fisher player;
    Bobber bobber;
@@ -29,7 +29,7 @@ public class mainGame extends BasicGameState {
       player = new Fisher(960,180);
       bobber = new Bobber();
       map = new map("data/assets/images/map.png");
-      map.initBarriersOutside();
+      map.initBarriersOutside(); //load barriers and key points
       map.initKeyPointsOutside();
       barriers = map.getBarriers(); // get barriers from map
       Music bgmusic =new Music("data/assets/audio/waves.wav");

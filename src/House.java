@@ -14,8 +14,10 @@ public class House extends BasicGameState {
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
       map = new map("data/assets/images/insideMap.png");
       npcSheet = new Image("data/assets/images/npc_walk.png");
-      shopkeep = new NonPlayerCharacter(npcSheet, 256, 192, 2);
+      shopkeep = new NonPlayerCharacter(npcSheet, 324, 256, 2);
       map.initKeyPointsInside();
+      map.initBarriersInside();
+      
    }
 
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
@@ -33,7 +35,7 @@ public class House extends BasicGameState {
       if (mainGame.debug && !(mainGame.debugCode == 1)) { // draw grid if debug mode is active
          map.grid(g);
       }
-
+      map.showBarriers(g);
       shopkeep.drawNPC(g);
       mainGame.player.draw(g);
       map.showKeyPoints(g);

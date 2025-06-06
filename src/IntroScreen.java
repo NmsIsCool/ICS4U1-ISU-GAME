@@ -16,7 +16,7 @@ public class IntroScreen extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException { 
        Input in=gc.getInput();
        if(in.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
-            mainGame.debug=false;
+            mainGame.debug=true;
            sbg.enterState(1);
        }
        if(in.isKeyPressed(Input.KEY_BACKSLASH)){

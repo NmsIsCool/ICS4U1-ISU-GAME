@@ -32,14 +32,20 @@ public class map {
         }
     }
 
-    public void initKeyPointsOutside(){
-        keyPoints.add(new Rectangle(905,135,110, 20));
+    public void initKeyPointsOutside() {
+        keyPoints.add(new Rectangle(905, 135, 110, 20));
     }
 
-    public void initBarriersInside(){}
+    public void initBarriersInside() {
+        barriers.add(new Rectangle(0,128,64*12,64));
+        barriers.add(new Rectangle(0,448, (64*6)+12, 64));
+        barriers.add(new Rectangle((512+48),448, (64*12),64));
+        barriers.add(new Rectangle(64,0,64,64*9));
+        barriers.add(new Rectangle(832,0,64,64*9));
+    }
 
-    public void initKeyPointsInside(){
-        keyPoints.add(new Rectangle(384,512,64*3,64));
+    public void initKeyPointsInside() {
+        keyPoints.add(new Rectangle(384, 512, 64 * 3, 64));
     }
 
     public void draw() throws SlickException {
@@ -59,16 +65,20 @@ public class map {
     }
 
     public void showBarriers(Graphics g) {
-        g.setColor(Color.blue);
-        for (Rectangle barrier : barriers) {
-            g.draw(barrier);
+        if (mainGame.debug && !(mainGame.debugCode == 1)) {
+            g.setColor(Color.blue);
+            for (Rectangle barrier : barriers) {
+                g.draw(barrier);
+            }
         }
     }
 
     public void showKeyPoints(Graphics g) {
-        g.setColor(Color.yellow);
-        for (Rectangle keyPoint : keyPoints) {
-            g.draw(keyPoint);
+        if (mainGame.debug && !(mainGame.debugCode == 1)) {
+            g.setColor(Color.yellow);
+            for (Rectangle keyPoint : keyPoints) {
+                g.draw(keyPoint);
+            }
         }
     }
 
