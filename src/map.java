@@ -19,33 +19,60 @@ public class map {
 
     public void initBarriersOutside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
-            barriers.add(new Rectangle(0, 192, 64 * 2, 64));
-            barriers.add(new Rectangle(64, 256, 64, 64 * 2));
-            barriers.add(new Rectangle(128, 320, 64 * 2, 64));
-            barriers.add(new Rectangle(192, 128, 64, 64 * 4));
-            barriers.add(new Rectangle(192, 128, 64 * 4, 64));
-            barriers.add(new Rectangle(384, 192, 64 * 3, 64));
-            barriers.add(new Rectangle(512, 256, 64 * 8, 64));
-            barriers.add(new Rectangle(128, 288, 64, 32));
-            barriers.add(new Rectangle(531, 30, 64 + 24, 36));
-            barriers.add(new Rectangle(905, 25, 110, 110));
+
+            // terrain barriers
+            makeBarrier(0, 448, 64 * 3, 64);
+            makeBarrier(128, 448, 64, 64 * 5);
+            makeBarrier(128, 704, 64 * 4, 64);
+            makeBarrier(320, 512, 64, 64 * 4);
+            makeBarrier(256, 512, 64 * 2, 32);
+            makeBarrier(256, 448, 64 * 4, 64);
+            makeBarrier(448, 384, 64 * 3, 64);
+            makeBarrier(576, 320, 64 * 3, 64);
+            makeBarrier(704, 384, 64 * 4, 64);
+            makeBarrier(896, 448, 64 * 4, 64);
+            makeBarrier(1088, 448, 64, 64 * 6);
+            makeBarrier(1088, 768, 64 * 3, 64);
+            makeBarrier(1152, 736, 64, 32);
+            makeBarrier(1216, 512, 64, 64 * 5);
+            makeBarrier(1216, 512, 64 * 4, 64);
+            makeBarrier(1408, 576, 64 * 6, 64);
+            makeBarrier(1728, 512, 64 * 3, 64);
+            makeBarrier(1856, 448, 64, 64);
+
+            // world geom barriers
+
+            // fish shop
+            makeBarrier(75, 90, 110, 120);
+            // scarecrow
+            makeBarrier(1016, 175, 84, 115);
+
+            // Misc Houses
+            int deltax = 100;
+            int deltay = 105;
+            makeBarrier(1550, 218, deltax, deltay);
+            makeBarrier(1550, 25, deltax, deltay);
+            makeBarrier(1675, 25, deltax, deltay);
+            makeBarrier(1675, 218, deltax, deltay);
         }
     }
 
     public void initKeyPointsOutside() {
-        keyPoints.add(new Rectangle(905, 135, 110, 20));
+        if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
+            makeKey(75, 210, 110, 20);
+        }
     }
 
     public void initBarriersInside() {
-        barriers.add(new Rectangle(0,128,64*20,64));
-        barriers.add(new Rectangle(0,448, (64*6)+12, 64));
-        barriers.add(new Rectangle((512+48),448, (64*12),64));
-        barriers.add(new Rectangle(64,0,64,64*9));
-        barriers.add(new Rectangle(832,0,64,64*9));
+        if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
+
+        }
     }
 
     public void initKeyPointsInside() {
-        keyPoints.add(new Rectangle(384, 512, 64 * 3, 64));
+        if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
+
+        }
     }
 
     public void draw() throws SlickException {
@@ -55,8 +82,8 @@ public class map {
     public void grid(Graphics g) throws SlickException {
         g.setColor(Color.red);
 
-        for (int i = 0; i < 64 * 16; i += 64) {
-            for (int j = 0; j < 64 * 9; j += 64) {
+        for (int i = 0; i < 64 * 30; i += 64) {
+            for (int j = 0; j < 64 * 17; j += 64) {
                 gridFont.drawString(i + 3, j + 3, "" + i, Color.white);
                 gridFont.drawString(i + 3, j + 12, "" + j, Color.white);
                 g.drawRect(i, j, 64, 64);
@@ -80,6 +107,18 @@ public class map {
                 g.draw(keyPoint);
             }
         }
+    }
+
+    // i was so tired of writing the full thing so i just made a smaller method for
+    // it
+    public void makeBarrier(int x, int y, int width, int height) {
+
+        barriers.add(new Rectangle(x, y, width, height));
+    }
+
+    public void makeKey(int x, int y, int width, int height) {
+
+        keyPoints.add(new Rectangle(x, y, width, height));
     }
 
     public ArrayList<Rectangle> getBarriers() {

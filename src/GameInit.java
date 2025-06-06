@@ -5,8 +5,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameInit extends StateBasedGame {
 
-    public static final int SCREEN_WIDTH = 1024;
-    public static final int SCREEN_HEIGHT = 576;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1088;
 
     public GameInit(String title) {
         super(title);
@@ -16,7 +16,6 @@ public class GameInit extends StateBasedGame {
         this.addState(new IntroScreen()); // 0
         this.addState(new mainGame()); // 20
         this.addState(new Instructions_Gameplay()); // 1
-        this.addState(new Instructions_Objective()); // 2
         this.addState(new House()); //21
     }
 

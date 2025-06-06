@@ -4,8 +4,7 @@ Menus - 0x
 Intro Screen - 0
 Settings - 10
 Instructions Gameplay - 01
-Instructions Controls - 02
-Main Game Inside - 20
+Main Game Outside - 20
 
 Menus - Settings - 1x
 Home Page - 10

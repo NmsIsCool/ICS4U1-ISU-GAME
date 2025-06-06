@@ -93,7 +93,7 @@ public class Fisher {
         hitbox.setX(x);
         hitbox.setY(y);
 
-        if (isHitting(barriers) || x > 1025 - 32 || x < 0 || y < 0) {
+        if (isHitting(barriers) || x > 1920 - 32 || x < 0 || y < 0) {
             hitbox.setX(origx);
             hitbox.setY(origy);
         }

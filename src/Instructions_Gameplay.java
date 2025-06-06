@@ -8,25 +8,25 @@ import org.newdawn.slick.Input;
 
 public class Instructions_Gameplay extends BasicGameState {
     private Image GAMEPLAY_INSTRUCTIONS;
-    long t = System.nanoTime();
-    long dt = 0;
+    private int timeElapsed = 0;
+    private static final int TIME_LIMIT = 1000; // 1 second
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        GAMEPLAY_INSTRUCTIONS = new Image("data/assets/images/Instructions_Gameplay.png");
-
+        GAMEPLAY_INSTRUCTIONS = new Image("data/assets/images/Instructions.png");
+        timeElapsed = 0; // Reset time elapsed
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        timeElapsed += i;
         Input in = gc.getInput();
-        long dt = System.nanoTime() - t;
-        if (in.isMousePressed(Input.MOUSE_LEFT_BUTTON) && dt > 1000000000L) {
-            sbg.enterState(2); // enter next instruction screen
+        if (in.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && timeElapsed > TIME_LIMIT) {
+            sbg.enterState(20); // enter game
         }
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         g.drawImage(GAMEPLAY_INSTRUCTIONS, 0, 0);
-        dt = System.nanoTime() - t;
+
     }
 
     public int getID() {
