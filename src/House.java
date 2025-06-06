@@ -1,3 +1,4 @@
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -6,15 +7,16 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Image;
 
+
 public class House extends BasicGameState {
-   map map;
-   NonPlayerCharacter shopkeep;
+   static map map;
+   static NonPlayerCharacter shopkeep;
    Image npcSheet;
 
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-      map = new map("data/assets/images/insideMap.png");
+      map = new map("data/assets/images/shop.png");
       npcSheet = new Image("data/assets/images/npc_walk.png");
-      shopkeep = new NonPlayerCharacter(npcSheet, 324, 256, 2);
+      shopkeep = new NonPlayerCharacter(npcSheet, 824, 512-36, 2);
       map.initKeyPointsInside();
       map.initBarriersInside();
       
@@ -25,13 +27,14 @@ public class House extends BasicGameState {
       mainGame.player.move(in, map.getBarriers()); // move player based on input and barriers from map
 
       if(mainGame.player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)){
-         mainGame.player.setPos(962,136);
+         mainGame.player.setPos(64+48,192+20);
          sbg.enterState(20);
       }
    }
 
+   @SuppressWarnings("deprecation")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-      map.draw();
+      map.draw(640,256);
       if (mainGame.debug && !(mainGame.debugCode == 1)) { // draw grid if debug mode is active
          map.grid(g);
       }
@@ -39,6 +42,8 @@ public class House extends BasicGameState {
       shopkeep.drawNPC(g);
       mainGame.player.draw(g);
       map.showKeyPoints(g);
+      if(mainGame.player.isHitting(shopkeep.getInteractBox()) || mainGame.player.isHitting(map.getKeyPoints()))
+         mainGame.ttf.drawString(mainGame.player.getX()-32, mainGame.player.getY()-24, "Press E to Interact", Color.black);
    }
 
    public int getID() {

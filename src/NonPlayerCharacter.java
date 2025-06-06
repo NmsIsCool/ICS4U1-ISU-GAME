@@ -36,4 +36,9 @@ public class NonPlayerCharacter {
         //draw NPC at set position and direction
         npcIdle[dir].draw(interactbox.getX(), interactbox.getY());
     }
+
+    public Rectangle getInteractBox() {
+        // Return the interaction box of the NPC
+        return interactbox;
+    }
 }

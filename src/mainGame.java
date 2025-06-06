@@ -14,6 +14,7 @@ import org.newdawn.slick.Music;
 @SuppressWarnings({"deprecation"}) //stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
    private TrueTypeFont debugFont=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
+   static TrueTypeFont ttf=new TrueTypeFont(new java.awt.Font("Arial", 3, 16),true);
    map map;
    public static boolean debug = true;
    public static int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
@@ -46,8 +47,9 @@ public class mainGame extends BasicGameState {
       // Should rarely be an issue.
       castGame.update();
 
+      
       if(player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)){
-         player.setPos(458, 500);
+         player.setPos(896+32, 640-48);
          sbg.enterState(21);
       }
    }
@@ -66,6 +68,9 @@ public class mainGame extends BasicGameState {
          map.showKeyPoints(g);
          // draw grid for debugging when not in code one
       }
+
+      if(player.isHitting(map.getKeyPoints()))
+         ttf.drawString(player.getX()-48, player.getY()-24, "Press E to Interact", Color.black);
 
       if (player.casting) {
          bobber.draw(g);

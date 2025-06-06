@@ -14,6 +14,7 @@ public class Fisher {
     Image cast[][] = new Image[4][12];
     Image idleImage[] = new Image[4];
     int x, y;
+    int dx=1;
     int dir = 3; // 0=U, 1=L, 2=D, 3=R;
     boolean stop = false, stopcast = true;
     private Rectangle hitbox;
@@ -73,18 +74,23 @@ public class Fisher {
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
+
+        if(kb.isKeyDown(Input.KEY_LSHIFT))
+            dx=2;
+        else
+            dx=1;
         // control movement while not holding cast
         if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
-            x++;
+            x+=dx;
             dir = 3;
         } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
-            x--;
+            x-=dx;
             dir = 1;
         } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
-            y--;
+            y-=dx;
             dir = 0;
         } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
-            y++;
+            y+=dx;
             dir = 2;
         } else {
             stop = true;
@@ -137,6 +143,7 @@ public class Fisher {
 
     }
 
+    //check is player is hitting barriers/key points
     public boolean isHitting(ArrayList<Rectangle> barriers) {
         // Check if the player is hitting any barriers
         for (Rectangle barrier : barriers) {
@@ -145,6 +152,14 @@ public class Fisher {
             }
         }
         return false; // Player is not hitting any barriers
+    }
+
+    //overload is hitting to check if player is hitting a static rectangle
+    public boolean isHitting(Rectangle rect){
+        if(hitbox.intersects(rect))
+            return true;
+        else
+            return false;
     }
 
     // draw player and animations based on boolean triggers
