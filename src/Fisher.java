@@ -20,6 +20,16 @@ public class Fisher {
     public boolean casting = false, holdingcast = false, idlebobber = false;
     public float varyDist = 0;
 
+    //Variables to store fish inventory, not yet used but Soon(TM)
+    double scoreMult=1; //score multiplier based on fish in current inventory
+    int score=0; //score based on fish caught, pretty cool ig
+    int trash=0; //score+=1
+    int minorFish=0; //Score+=5
+    int mediocreFish=0; //Score+=10
+    int largeFish=0; //Score+=25
+    int mythicFish=0; //Score+=75, scoreMult+=1
+    int RNGesusFish=0; //Score+=125, scoreMult+=1.5
+
     // object contructor, create player and animations from sprite sheets
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
@@ -103,6 +113,7 @@ public class Fisher {
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
+            mainGame.bobber.calculateCastDist();
 
             // if key space is not held and player is not casting and not holding cast, stop
             // animation and draw fishing idle frame

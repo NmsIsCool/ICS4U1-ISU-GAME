@@ -18,7 +18,7 @@ public class mainGame extends BasicGameState {
    public static boolean debug = true;
    public static int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
    static Fisher player;
-   Bobber bobber;
+   static Bobber bobber;
    String coords;
    int mouseX, mouseY;
    static castGame castGame;
@@ -69,7 +69,6 @@ public class mainGame extends BasicGameState {
 
       if (player.casting) {
          bobber.draw(g);
-         bobber.calculateCastDist();
       } else if (player.idlebobber) {
          bobber.draw(g);
       }

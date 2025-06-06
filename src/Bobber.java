@@ -25,7 +25,8 @@ public class Bobber {
     public void draw(Graphics g) throws SlickException {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
-
+        //output bobber position
+        mainGame.debugOutput("Bobber Position: " + x + ", " + y);
         g.drawImage(bobberImage, x, y);
         g.setColor(Color.red); // TODO: Change fishing line color to not red, later tho i need to be able to see it :/
 
@@ -50,8 +51,10 @@ public class Bobber {
     public void calculateCastDist() {
         x = mainGame.player.getX();
         y = mainGame.player.getY() + 24;
-        if (vel == 0)
-            vel = mainGame.castGame.getCastVelocity();
+        if(mainGame.castGame.tickerpercent<=20)
+            vel=21;
+        else
+            vel= (mainGame.castGame.tickerpercent)/1.8f; // get velocity from cast game ticker
         dir = mainGame.player.getDir();
 
         toAddY = 0;
@@ -74,6 +77,10 @@ public class Bobber {
         y += toAddY;
 
         vel = 0;
+    }
+
+    public void setVel(int newVel){
+        vel=newVel;
     }
 
     // get distance between bobber and player, used to calculate quality score

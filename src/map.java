@@ -37,7 +37,7 @@ public class map {
     }
 
     public void initBarriersInside() {
-        barriers.add(new Rectangle(0,128,64*12,64));
+        barriers.add(new Rectangle(0,128,64*20,64));
         barriers.add(new Rectangle(0,448, (64*6)+12, 64));
         barriers.add(new Rectangle((512+48),448, (64*12),64));
         barriers.add(new Rectangle(64,0,64,64*9));
