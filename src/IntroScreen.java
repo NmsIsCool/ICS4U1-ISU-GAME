@@ -21,7 +21,7 @@ public class IntroScreen extends BasicGameState {
        }
        if(in.isKeyPressed(Input.KEY_BACKSLASH)){
             mainGame.debug=true;
-            sbg.enterState(1);
+            sbg.enterState(20);
        }
         
     }

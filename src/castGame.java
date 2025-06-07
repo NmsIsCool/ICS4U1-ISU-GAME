@@ -43,7 +43,7 @@ public class castGame {
 
     public void drawGame(Graphics g) throws SlickException {
         if (holdingCast) {
-            ticker+=tickerDir;
+            ticker+=1.5f*tickerDir;
             tickerpercent=(ticker/92.0f)*100f;
             if(ticker>=92 || ticker<=0){
                 tickerDir=tickerDir*-1; //reverse direction of ticker when it reaches max or min

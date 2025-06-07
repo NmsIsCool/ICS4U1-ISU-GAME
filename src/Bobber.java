@@ -48,13 +48,13 @@ public class Bobber {
     }
 
     // based on velocity from casting minigame, change position based on velocity
-    public void calculateCastDist() {
+    public void calculateCast() {
         x = mainGame.player.getX();
         y = mainGame.player.getY() + 24;
         if(mainGame.castGame.tickerpercent<=20)
             vel=21;
         else
-            vel= (mainGame.castGame.tickerpercent)/1.8f; // get velocity from cast game ticker
+            vel= (mainGame.castGame.tickerpercent)/1.1f; // get velocity from cast game ticker
         dir = mainGame.player.getDir();
 
         toAddY = 0;
@@ -75,7 +75,8 @@ public class Bobber {
         }
         x += toAddX;
         y += toAddY;
-
+        if(y>992)
+            y=992;
         vel = 0;
     }
 
@@ -103,8 +104,18 @@ public class Bobber {
     public float getQualityScore() {
         // quality score is calculated as a percentage of the distance covered between
         // the edge of the dock and the edge of the map left as a decimal
-        return ((calculateDistance() / 384) > 1) ? 1 : (float) (calculateDistance() / 384);
+        if (calculateDistance()/ getDistanceFromPlayerToLowerEdge() > 1) {
+            return 1;
+        } else {
+            return (float) (calculateDistance() / getDistanceFromPlayerToLowerEdge());
+        }
 
     }
+
+    //method to get distance from player to lower edge of the map (1920x1088)
+    public static int getDistanceFromPlayerToLowerEdge() {
+        return 1088 - (mainGame.player.getY() + 64);
+    }
+    
 
 }

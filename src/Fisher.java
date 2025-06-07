@@ -20,6 +20,7 @@ public class Fisher {
     private Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
     public float varyDist = 0;
+    
 
     //Variables to store fish inventory, not yet used but Soon(TM)
     double scoreMult=1; //score multiplier based on fish in current inventory
@@ -119,7 +120,8 @@ public class Fisher {
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
-            mainGame.bobber.calculateCastDist();
+            mainGame.bobber.calculateCast();
+            
 
             // if key space is not held and player is not casting and not holding cast, stop
             // animation and draw fishing idle frame

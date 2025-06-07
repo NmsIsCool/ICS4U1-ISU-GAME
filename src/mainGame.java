@@ -24,6 +24,9 @@ public class mainGame extends BasicGameState {
    int mouseX, mouseY;
    static castGame castGame;
    ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
+   static float castScore=0;
+   int ticker=0;
+   int secondsElapsed=0;
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -34,7 +37,8 @@ public class mainGame extends BasicGameState {
       map.initKeyPointsOutside();
       barriers = map.getBarriers(); // get barriers from map
       Music bgmusic =new Music("data/assets/audio/waves.wav");
-      bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume
+      if(!debug)
+         bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume if not in debug
       castGame=new castGame();
    }
 
@@ -56,6 +60,10 @@ public class mainGame extends BasicGameState {
 
    // render needed objects every frame
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+      ticker++;
+      if(ticker%200==0){
+         secondsElapsed++;
+      }
       Input input=gc.getInput();
       mouseX = input.getMouseX();
       mouseY = input.getMouseY();
@@ -76,6 +84,8 @@ public class mainGame extends BasicGameState {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
+         castScore=bobber.getQualityScore();
+         debugOutput("Cast Score: " + castScore);
       }
 
       // if debug mode is active, draw a message on screen

@@ -7,6 +7,7 @@ public class GameInit extends StateBasedGame {
 
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1088;
+    public static final int FRAME_RATE = 200;
 
     public GameInit(String title) {
         super(title);
@@ -21,11 +22,11 @@ public class GameInit extends StateBasedGame {
 
     public static void main(String args[]) throws SlickException {
 
-        GameInit game = new GameInit("Fosh");
+        GameInit game = new GameInit("Fish Frenzy");
         AppGameContainer app = new AppGameContainer(game);
         app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
         app.setShowFPS(true);
-        app.setTargetFrameRate(200);
+        app.setTargetFrameRate(FRAME_RATE);
         app.setIcons(new String[] {
                 "data/assets/images/icon16.png",
                 "data/assets/images/icon.png",
