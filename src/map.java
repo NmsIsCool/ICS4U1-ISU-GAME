@@ -45,7 +45,7 @@ public class map {
             // fish shop
             makeBarrier(75, 90, 110, 120);
             // scarecrow
-            makeBarrier(1016, 175, 84, 115);
+            makeBarrier(1016, 175, 84, 75);
 
             // Misc Houses
             int deltax = 100;

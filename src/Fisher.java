@@ -8,35 +8,39 @@ public class Fisher {
     // declare variables/objects
     SpriteSheet walkSheet;
     SpriteSheet castSheet;
+    SpriteSheet runSheet;
     Animation castAnim[] = new Animation[12];
     Animation walkAnim[] = new Animation[8];
+    Animation runAnim[] = new Animation[8];
     Image walk[][] = new Image[4][8];
+    Image run[][] = new Image[4][8];
     Image cast[][] = new Image[4][12];
     Image idleImage[] = new Image[4];
     int x, y;
-    int dx=1;
+    int dx = 1;
     int dir = 3; // 0=U, 1=L, 2=D, 3=R;
     boolean stop = false, stopcast = true;
+    boolean running = false;
     private Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
     public float varyDist = 0;
-    
 
-    //Variables to store fish inventory, not yet used but Soon(TM)
-    double scoreMult=1; //score multiplier based on fish in current inventory
-    int score=0; //score based on fish caught, pretty cool ig
-    int trash=0; //score+=1
-    int minorFish=0; //Score+=5
-    int mediocreFish=0; //Score+=10
-    int largeFish=0; //Score+=25
-    int mythicFish=0; //Score+=75, scoreMult+=1
-    int RNGesusFish=0; //Score+=125, scoreMult+=1.5
+    // Variables to store fish inventory, not yet used but Soon(TM)
+    double scoreMult = 1; // score multiplier based on fish in current inventory
+    int score = 0; // score based on fish caught, pretty cool ig
+    int trash = 0; // score+=1
+    int minorFish = 0; // Score+=5
+    int mediocreFish = 0; // Score+=10
+    int largeFish = 0; // Score+=25
+    int mythicFish = 0; // Score+=75, scoreMult+=1
+    int RNGesusFish = 0; // Score+=125, scoreMult+=1.5
 
     // object contructor, create player and animations from sprite sheets
     public Fisher(int x, int y) throws SlickException {
         this.x = x;
         this.y = y;
         walkSheet = new SpriteSheet("data/assets/images/walk.png", 64, 64);
+        runSheet = new SpriteSheet("data/assets/images/run.png", 64, 64);
         castSheet = new SpriteSheet("data/assets/images/tool_rod.png", 128, 128);
 
         walkSheet.startUse();
@@ -53,6 +57,15 @@ public class Fisher {
         idleImage[2] = walkSheet.getSubImage(0, 2);
         idleImage[3] = walkSheet.getSubImage(0, 3);
         walkSheet.endUse();
+
+        runSheet.startUse();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 8; j++) {
+                run[i][j] = runSheet.getSubImage(j, i);
+            }
+            runAnim[i] = new Animation(run[i], 100, true);
+        }
+        runSheet.endUse();
 
         castSheet.startUse();
         for (int i = 0; i < 4; i++) {
@@ -76,22 +89,25 @@ public class Fisher {
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
 
-        if(kb.isKeyDown(Input.KEY_LSHIFT))
-            dx=2;
-        else
-            dx=1;
+        if (kb.isKeyDown(Input.KEY_LSHIFT) && mainGame.debug) {
+            running = true;
+            dx = 2;
+        } else {
+            dx = 1;
+            running = false;
+        }
         // control movement while not holding cast
         if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
-            x+=dx;
+            x += dx;
             dir = 3;
         } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
-            x-=dx;
+            x -= dx;
             dir = 1;
         } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
-            y-=dx;
+            y -= dx;
             dir = 0;
         } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
-            y+=dx;
+            y += dx;
             dir = 2;
         } else {
             stop = true;
@@ -121,7 +137,6 @@ public class Fisher {
             castAnim[dir].setCurrentFrame(3);
             holdingcast = false;
             mainGame.bobber.calculateCast();
-            
 
             // if key space is not held and player is not casting and not holding cast, stop
             // animation and draw fishing idle frame
@@ -145,7 +160,7 @@ public class Fisher {
 
     }
 
-    //check is player is hitting barriers/key points
+    // check is player is hitting barriers/key points
     public boolean isHitting(ArrayList<Rectangle> barriers) {
         // Check if the player is hitting any barriers
         for (Rectangle barrier : barriers) {
@@ -156,9 +171,9 @@ public class Fisher {
         return false; // Player is not hitting any barriers
     }
 
-    //overload is hitting to check if player is hitting a static rectangle
-    public boolean isHitting(Rectangle rect){
-        if(hitbox.intersects(rect))
+    // overload is hitting to check if player is hitting a static rectangle
+    public boolean isHitting(Rectangle rect) {
+        if (hitbox.intersects(rect))
             return true;
         else
             return false;
@@ -181,10 +196,18 @@ public class Fisher {
             // If player is not stopped and not casting, draw walking animation in set
             // direction
         } else if (!stop && stopcast) {
-            if (walkAnim[dir].isStopped()) { // Restart the animation if it's not running
-                walkAnim[dir].start();
+            if (running) {
+                if (runAnim[dir].isStopped()) {
+                    runAnim[dir].start();
+                }
+                runAnim[dir].draw(drawX, drawY);
+            } else {
+                if (walkAnim[dir].isStopped()) {
+                    walkAnim[dir].start();
+                }
+                walkAnim[dir].draw(drawX, drawY);
             }
-            walkAnim[dir].draw(drawX, drawY);
+
             // If player is casting, draw casting animation and wait for it to end
         } else if (stop && !stopcast) {
             castAnim[dir].draw(drawX - 32, drawY - 32);
