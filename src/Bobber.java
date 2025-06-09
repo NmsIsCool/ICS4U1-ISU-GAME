@@ -4,7 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Line;
 
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class Bobber {
     int x = 0;
     int y = 0;
@@ -14,7 +14,7 @@ public class Bobber {
     int playerX, playerY;
     int toAddY = 0, toAddX = 0;
 
-    // bobber constructor
+    // bobber constructor, just makes the image
     public Bobber() throws SlickException {
         bobberImage = new Image("data/assets/images/bobber.png");
 
@@ -28,8 +28,12 @@ public class Bobber {
         //output bobber position
         mainGame.debugOutput("Bobber Position: " + x + ", " + y);
         g.drawImage(bobberImage, x, y);
-        g.setColor(Color.red); // TODO: Change fishing line color to not red, later tho i need to be able to see it :/
-
+        
+        //make fishing line color black during gameplay, red whilst debugging
+        if(!mainGame.debug)
+            g.setColor(Color.black); 
+        else
+            g.setColor(Color.red);
         // adjust fishing line position to align with sprite in each direction
         if (mainGame.player.idlebobber && mainGame.player.dir == 3) { // RIGHT
             Line fishingLine = new Line(playerX + 82, playerY + 28, x + 4, y + 8);
@@ -80,6 +84,7 @@ public class Bobber {
         vel = 0;
     }
 
+    //set bobber velocity
     public void setVel(int newVel){
         vel=newVel;
     }

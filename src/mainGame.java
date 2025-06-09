@@ -10,43 +10,50 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 
-@SuppressWarnings({"deprecation"}) //stop compiler from throwing warnings for deprecated libraries
+@SuppressWarnings({ "deprecation" }) // stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
-   private TrueTypeFont debugFont=new TrueTypeFont(new java.awt.Font("Arial", 1, 12),true);
-   static TrueTypeFont ttf=new TrueTypeFont(new java.awt.Font("Arial", 3, 16),true);
-   map map;
-   public static boolean debug = true;
-   public static int debugCode=0; // 0=primary debug, 1=mapOff, noGrid
+   // Fonts
+   private TrueTypeFont debugFont = new TrueTypeFont(new java.awt.Font("Arial", 1, 12), true);
+   static TrueTypeFont ttf = new TrueTypeFont(new java.awt.Font("Arial", 3, 16), true);
+
+   // Game objects
    static Fisher player;
    static Bobber bobber;
-   String coords;
-   int mouseX, mouseY;
    static castGame castGame;
-   ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
-   static float castScore=0;
-   int ticker=0;
-   int secondsElapsed=0;
    static fishingMiniGame miniGame;
-   int currentFishType;
-   int fishTimer;
-   int globalTimer;
-   boolean waitingFish=false;
-   boolean fishTimerLatch=false;
-   static boolean enterFishMiniGame=false;
+   static map map;
+
+   // Collections
+   ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
+
+   // Primitive types
+   public static boolean debug = true;
+   public static int debugCode = 0; // 0=primary debug, 1=mapOff, noGrid
+   private String coords;
+   public static int mouseX, mouseY;
+   public static float castScore = 0;
+   static int ticker = 0;
+   static int secondsElapsed = 0;
+   static int currentFishType;
+   static int fishTimer;
+   static int globalTimer;
+   static boolean waitingFish = false;
+   static boolean fishTimerLatch = false;
+   static boolean enterFishMiniGame = false;
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-      player = new Fisher(960,180);
+      player = new Fisher(960, 180);
       bobber = new Bobber();
       map = new map("data/assets/images/map.png");
-      map.initBarriersOutside(); //load barriers and key points
+      map.initBarriersOutside(); // load barriers and key points
       map.initKeyPointsOutside();
       barriers = map.getBarriers(); // get barriers from map
-      Music bgmusic =new Music("data/assets/audio/waves.wav");
-      if(!debug)
-         bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume if not in debug
-      castGame=new castGame();
-      miniGame=new fishingMiniGame();
+      Music bgmusic = new Music("data/assets/audio/waves.wav");
+      if (!debug)
+         bgmusic.loop(1.0f, 0.5f); // loop background music at 50% volume if not in debug
+      castGame = new castGame();
+      miniGame = new fishingMiniGame();
    }
 
    // run updates and check inputs every frame
@@ -58,9 +65,8 @@ public class mainGame extends BasicGameState {
       // Should rarely be an issue.
       castGame.update();
 
-      
-      if(player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)){
-         player.setPos(896+32, 640-48);
+      if (player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)) {
+         player.setPos(896 + 32, 640 - 48);
          sbg.enterState(21);
       }
    }
@@ -69,50 +75,50 @@ public class mainGame extends BasicGameState {
    @SuppressWarnings("static-access")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       ticker++;
-      if(ticker%200==0){
+      if (ticker % 200 == 0) {
          secondsElapsed++;
       }
-      Input input=gc.getInput();
+      Input input = gc.getInput();
       mouseX = input.getMouseX();
       mouseY = input.getMouseY();
-      
-      if(!(debugCode==1))
+
+      if (!(debugCode == 1))
          map.draw();
-      if (debug && !(debugCode==1)) {
-         map.grid(g); 
+      if (debug && !(debugCode == 1)) {
+         map.grid(g);
          map.showBarriers(g);
          map.showKeyPoints(g);
          // draw grid for debugging when not in code one
       }
 
-      if(player.isHitting(map.getKeyPoints()))
-         ttf.drawString(player.getX()-48, player.getY()-24, "Press E to Interact", Color.black);
+      if (player.isHitting(map.getKeyPoints()))
+         ttf.drawString(player.getX() - 48, player.getY() - 24, "Press E to Interact", Color.black);
 
       if (player.casting) {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
-         castScore=bobber.getQualityScore();
-         currentFishType=miniGame.getFishType();
-         if(!fishTimerLatch)
-            fishTimer=currentFishType*5;
-            fishTimerLatch=true;
+         castScore = bobber.getQualityScore();
+         currentFishType = miniGame.getFishType();
+         if (!fishTimerLatch)
+            fishTimer = currentFishType * 5;
+         fishTimerLatch = true;
 
          debugOutput("Cast Score: " + castScore);
       }
 
-      if(ticker%200==0){
-         fishTimer-=1;
-         if(fishTimer==0){
-            enterFishMiniGame=true;
+      if (ticker % 200 == 0) {
+         fishTimer -= 1;
+         if (fishTimer == 0) {
+            enterFishMiniGame = true;
          }
       }
 
       // if debug mode is active, draw a message on screen
       g.setColor(Color.blue);
       if (debug) {
-         debugFont.drawString(10, 50,"DEBUG MODE " + debugCode, Color.blue);
-         debugFont.drawString(10, 70, getMem() + " MB used",Color.blue);
+         debugFont.drawString(10, 50, "DEBUG MODE " + debugCode, Color.blue);
+         debugFont.drawString(10, 70, getMem() + " MB used", Color.blue);
          coords = "(" + mouseX + ", " + mouseY + ")";
          g.setColor(Color.blue);
          g.drawString(coords, mouseX + 10, mouseY - 10);
@@ -120,7 +126,6 @@ public class mainGame extends BasicGameState {
       g.setColor(Color.white);
       castGame.drawGame(g);
       player.draw(g);
-      
 
    }
 
@@ -144,7 +149,7 @@ public class mainGame extends BasicGameState {
       if (debug) {
          Runtime runtime = Runtime.getRuntime();
          long memory = runtime.totalMemory() - runtime.freeMemory();
-         return (memory/1024/1024); // return memory in MB
+         return (memory / 1024 / 1024); // return memory in MB
       }
       return 0;
    }
