@@ -2,7 +2,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.*;
 import java.util.ArrayList;
 
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class Fisher {
 
     // declare variables/objects

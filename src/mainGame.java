@@ -7,7 +7,6 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.Sound; //TODO: Add sound effects
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 
@@ -27,6 +26,13 @@ public class mainGame extends BasicGameState {
    static float castScore=0;
    int ticker=0;
    int secondsElapsed=0;
+   static fishingMiniGame miniGame;
+   int currentFishType;
+   int fishTimer;
+   int globalTimer;
+   boolean waitingFish=false;
+   boolean fishTimerLatch=false;
+   static boolean enterFishMiniGame=false;
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -40,6 +46,7 @@ public class mainGame extends BasicGameState {
       if(!debug)
          bgmusic.loop(1.0f, 0.5f); //loop background music at 50% volume if not in debug
       castGame=new castGame();
+      miniGame=new fishingMiniGame();
    }
 
    // run updates and check inputs every frame
@@ -59,6 +66,7 @@ public class mainGame extends BasicGameState {
    }
 
    // render needed objects every frame
+   @SuppressWarnings("static-access")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       ticker++;
       if(ticker%200==0){
@@ -85,7 +93,19 @@ public class mainGame extends BasicGameState {
       } else if (player.idlebobber) {
          bobber.draw(g);
          castScore=bobber.getQualityScore();
+         currentFishType=miniGame.getFishType();
+         if(!fishTimerLatch)
+            fishTimer=currentFishType*5;
+            fishTimerLatch=true;
+
          debugOutput("Cast Score: " + castScore);
+      }
+
+      if(ticker%200==0){
+         fishTimer-=1;
+         if(fishTimer==0){
+            enterFishMiniGame=true;
+         }
       }
 
       // if debug mode is active, draw a message on screen
