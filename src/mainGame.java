@@ -125,7 +125,9 @@ public class mainGame extends BasicGameState {
       }
       g.setColor(Color.white);
       castGame.drawGame(g);
+
       player.draw(g);
+      miniGame.draw(g);
 
    }
 

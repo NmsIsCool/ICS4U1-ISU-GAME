@@ -1,14 +1,21 @@
 import java.util.Random;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.Color;
 
 @SuppressWarnings("unused")
 public class fishingMiniGame {
     static float qualScore = 0;
     static Random rand = new Random();
+    static Rectangle mainBox, slider;
+    static int sliderX=480; //min 480 max 1320
+    static int dSX=2;
+
 
     public fishingMiniGame() {
         qualScore = mainGame.castScore;
+        mainBox=new Rectangle(480, 520/2, 900, 300);
+        slider=new Rectangle(sliderX, 480, 60,20);
     }
 
     // return meanings table
@@ -61,9 +68,29 @@ public class fishingMiniGame {
         }
     }
 
+    public static void moveSlider(){
+        sliderX+=dSX;
+        if(sliderX<=480)
+            dSX=2;
+        else if(sliderX>=1320)
+            dSX=-2;
+        slider.setX(sliderX);
+    }
+
     public static void draw(Graphics g){
+        drawElement(mainBox, Color.black, g);
+        drawElement(slider, Color.white, g);
+        moveSlider(); 
         if(mainGame.enterFishMiniGame){
             
         }
+    }
+
+    public static void drawElement(Rectangle element, Color col, Graphics g){
+        g.setColor(col);
+        g.fill(element);
+        g.draw(element);
+        
+
     }
 }

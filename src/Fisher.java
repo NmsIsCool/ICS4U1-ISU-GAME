@@ -88,29 +88,30 @@ public class Fisher {
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
-
-        if (kb.isKeyDown(Input.KEY_LSHIFT) && mainGame.debug) {
-            running = true;
-            dx = 2;
-        } else {
-            dx = 1;
-            running = false;
-        }
-        // control movement while not holding cast
-        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
-            x += dx;
-            dir = 3;
-        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
-            x -= dx;
-            dir = 1;
-        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
-            y -= dx;
-            dir = 0;
-        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
-            y += dx;
-            dir = 2;
-        } else {
-            stop = true;
+        if (!mainGame.enterFishMiniGame) {
+            if (kb.isKeyDown(Input.KEY_LSHIFT) && mainGame.debug) {
+                running = true;
+                dx = 2;
+            } else {
+                dx = 1;
+                running = false;
+            }
+            // control movement while not holding cast
+            if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
+                x += dx;
+                dir = 3;
+            } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
+                x -= dx;
+                dir = 1;
+            } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
+                y -= dx;
+                dir = 0;
+            } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
+                y += dx;
+                dir = 2;
+            } else {
+                stop = true;
+            }
         }
 
         hitbox.setX(x);
@@ -120,6 +121,7 @@ public class Fisher {
             hitbox.setX(origx);
             hitbox.setY(origy);
         }
+        
 
         // allow functionality for holding cast
         // if space is held and bobber not idle, start holding cast
