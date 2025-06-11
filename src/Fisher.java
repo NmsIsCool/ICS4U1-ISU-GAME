@@ -85,6 +85,8 @@ public class Fisher {
     // controls player movement and casting
     public void move(Input kb, ArrayList<Rectangle> barriers) throws SlickException {
         stop = false;
+        if (idlebobber)
+            stop = true;
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
@@ -112,6 +114,11 @@ public class Fisher {
             } else {
                 stop = true;
             }
+
+            if ((!kb.isKeyDown(Input.KEY_D) && !kb.isKeyDown(Input.KEY_A) && !kb.isKeyDown(Input.KEY_W) && !kb.isKeyDown(Input.KEY_S))
+                || holdingcast || idlebobber || casting) {
+                stop = true;
+            }
         }
 
         hitbox.setX(x);
@@ -121,19 +128,20 @@ public class Fisher {
             hitbox.setX(origx);
             hitbox.setY(origy);
         }
-        
 
         // allow functionality for holding cast
         // if space is held and bobber not idle, start holding cast
+
         if (kb.isKeyDown(Input.KEY_SPACE) && !idlebobber) {
             holdingcast = true;
+            mainGame.fishTimerLatch = false;
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if
                                                                             // key space is not held and cast is being
                                                                             // held,
             holdingcast = false; // play cast animation at frame 3 and set bobber to idle
             stopcast = false;
             casting = true;
-
+            mainGame.fishTimerLatch = false;
             varyDist = (float) Math.random() * 10;
             castAnim[dir].restart();
             castAnim[dir].setCurrentFrame(3);
@@ -149,7 +157,7 @@ public class Fisher {
             // if key LMB pressed is pressed and bobber is idle, stop bobber and start idle
             // frame
         }
-        if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && idlebobber) {
+        if (kb.isMousePressed(Input.MOUSE_LEFT_BUTTON) && (idlebobber || casting)) {
             idlebobber = false;
             stop = true;
             casting = false;
@@ -157,6 +165,8 @@ public class Fisher {
             stopcast = true;
             castAnim[dir].stop();
             idleImage[dir].draw(x, y);
+            mainGame.fishTimerLatch=false;
+            mainGame.enterFishMiniGame=false;
             mainGame.debugOutput("Bobber Stopped");
         }
 
@@ -225,6 +235,13 @@ public class Fisher {
             castAnim[dir].stop();
             walkAnim[dir].stop();
         }
+
+        if (stop && stopcast && !holdingcast && !idlebobber && !casting) {
+            walkAnim[dir].stop();
+            idleImage[dir].draw(drawX, drawY);
+        }
+
+        
 
         if (mainGame.debug) {
             g.draw(hitbox);

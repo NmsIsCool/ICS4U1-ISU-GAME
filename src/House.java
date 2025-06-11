@@ -25,11 +25,12 @@ public class House extends BasicGameState {
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
       mainGame.player.move(in, map.getBarriers()); // move player based on input and barriers from map
-
-      if(mainGame.player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)){
+      if(in.isKeyPressed(Input.KEY_E)){
+      if(mainGame.player.isHitting(map.getKeyPoints())){
          mainGame.player.setPos(64+48,192+20);
          sbg.enterState(20);
       }
+   }
    }
 
    @SuppressWarnings("deprecation")

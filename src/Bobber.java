@@ -26,7 +26,7 @@ public class Bobber {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
         //output bobber position
-        mainGame.debugOutput("Bobber Position: " + x + ", " + y);
+        //mainGame.debugOutput("Bobber Position: " + x + ", " + y);
         g.drawImage(bobberImage, x, y);
         
         //make fishing line color black during gameplay, red whilst debugging

@@ -70,10 +70,8 @@ public class fishingMiniGame {
 
     public static void moveSlider(){
         sliderX+=dSX;
-        if(sliderX<=480)
-            dSX=2;
-        else if(sliderX>=1320)
-            dSX=-2;
+        if(sliderX<=480 || sliderX>=1320)
+            dSX *= -1;
         slider.setX(sliderX);
     }
 
@@ -84,6 +82,12 @@ public class fishingMiniGame {
         if(mainGame.enterFishMiniGame){
             
         }
+    }
+
+    public static void startMiniGame(){
+        sliderX=480;
+        dSX=mainGame.currentFishType*2;
+        slider.setX(sliderX);
     }
 
     public static void drawElement(Rectangle element, Color col, Graphics g){

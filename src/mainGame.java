@@ -98,19 +98,23 @@ public class mainGame extends BasicGameState {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
+         if(!fishTimerLatch){
          castScore = bobber.getQualityScore();
          currentFishType = miniGame.getFishType();
-         if (!fishTimerLatch)
-            fishTimer = currentFishType * 5;
+         debugOutput("Current Fish: "+currentFishType);
+         fishTimer = currentFishType * 3;
          fishTimerLatch = true;
 
          debugOutput("Cast Score: " + castScore);
       }
+   }
 
       if (ticker % 200 == 0) {
          fishTimer -= 1;
          if (fishTimer == 0) {
+            currentFishType=miniGame.getFishType();
             enterFishMiniGame = true;
+            fishingMiniGame.startMiniGame();
          }
       }
 
