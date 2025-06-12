@@ -20,7 +20,6 @@ public class mainGame extends BasicGameState {
    static Fisher player;
    static Bobber bobber;
    static castGame castGame;
-   static fishingMiniGame miniGame;
    static map map;
 
    // Collections
@@ -37,6 +36,10 @@ public class mainGame extends BasicGameState {
    static int currentFishType;
    static int fishTimer;
    static int globalTimer;
+   static int shakeTimer = 0;
+   static int shakeMagnitude = 0;
+   static int shakeOffsetX = 0;
+   static int shakeOffsetY = 0;
    static boolean waitingFish = false;
    static boolean fishTimerLatch = false;
    static boolean enterFishMiniGame = false;
@@ -53,7 +56,6 @@ public class mainGame extends BasicGameState {
       if (!debug)
          bgmusic.loop(1.0f, 0.5f); // loop background music at 50% volume if not in debug
       castGame = new castGame();
-      miniGame = new fishingMiniGame();
    }
 
    // run updates and check inputs every frame
@@ -74,6 +76,15 @@ public class mainGame extends BasicGameState {
    // render needed objects every frame
    @SuppressWarnings("static-access")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+      if (shakeTimer > 0) {
+         shakeOffsetX = (int) (Math.random() * shakeMagnitude * 2) - shakeMagnitude;
+         shakeOffsetY = (int) (Math.random() * shakeMagnitude * 2) - shakeMagnitude;
+         shakeTimer--;
+      } else {
+         shakeOffsetX = 0;
+         shakeOffsetY = 0;
+      }
+
       ticker++;
       if (ticker % 200 == 0) {
          secondsElapsed++;
@@ -82,15 +93,6 @@ public class mainGame extends BasicGameState {
       mouseX = input.getMouseX();
       mouseY = input.getMouseY();
 
-      if (!(debugCode == 1))
-         map.draw();
-      if (debug && !(debugCode == 1)) {
-         map.grid(g);
-         map.showBarriers(g);
-         map.showKeyPoints(g);
-         // draw grid for debugging when not in code one
-      }
-
       if (player.isHitting(map.getKeyPoints()))
          ttf.drawString(player.getX() - 48, player.getY() - 24, "Press E to Interact", Color.black);
 
@@ -98,23 +100,20 @@ public class mainGame extends BasicGameState {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
-         if(!fishTimerLatch){
-         castScore = bobber.getQualityScore();
-         currentFishType = miniGame.getFishType();
-         debugOutput("Current Fish: "+currentFishType);
-         fishTimer = currentFishType * 3;
-         fishTimerLatch = true;
+         if (!fishTimerLatch) {
+            castScore = bobber.getQualityScore();
+            debugOutput("Current Fish: " + currentFishType);
+            fishTimer = currentFishType * 3 + (int) Math.random() * 5;
+            fishTimerLatch = true;
 
-         debugOutput("Cast Score: " + castScore);
+            debugOutput("Cast Score: " + castScore);
+         }
       }
-   }
 
       if (ticker % 200 == 0) {
          fishTimer -= 1;
          if (fishTimer == 0) {
-            currentFishType=miniGame.getFishType();
             enterFishMiniGame = true;
-            fishingMiniGame.startMiniGame();
          }
       }
 
@@ -128,11 +127,29 @@ public class mainGame extends BasicGameState {
          g.drawString(coords, mouseX + 10, mouseY - 10);
       }
       g.setColor(Color.white);
+      // In render(), before drawing world:
+      g.translate(shakeOffsetX, shakeOffsetY);
+
+      // draw world, player, bobber, etc.
+
+      g.translate(-shakeOffsetX, -shakeOffsetY); // reset for UI drawing
+      if (!(debugCode == 1))
+         map.draw();
+      if (debug && !(debugCode == 1)) {
+         map.grid(g);
+         map.showBarriers(g);
+         map.showKeyPoints(g);
+         // draw grid for debugging when not in code one
+      }
       castGame.drawGame(g);
 
       player.draw(g);
-      miniGame.draw(g);
 
+   }
+
+   public static void startScreenShake(int duration, int magnitude) {
+      shakeTimer = duration;
+      shakeMagnitude = magnitude;
    }
 
    // return ID for SBG

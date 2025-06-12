@@ -9,7 +9,7 @@ import org.newdawn.slick.Input;
 public class Instructions_Gameplay extends BasicGameState {
     private Image GAMEPLAY_INSTRUCTIONS;
     private int timeElapsed = 0;
-    private static final int TIME_LIMIT = 1000; // 1 second
+    private static final int TIME_LIMIT = 500; // 1 second
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         GAMEPLAY_INSTRUCTIONS = new Image("data/assets/images/Instructions.png");
