@@ -74,7 +74,6 @@ public class mainGame extends BasicGameState {
    }
 
    // render needed objects every frame
-   @SuppressWarnings("static-access")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       if (shakeTimer > 0) {
          shakeOffsetX = (int) (Math.random() * shakeMagnitude * 2) - shakeMagnitude;
