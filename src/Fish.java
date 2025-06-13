@@ -6,23 +6,34 @@ import org.newdawn.slick.Sound;
 
 public class Fish {
     public static int qualScore;
-    public int fishType=0;
+    public int fishType = 0;
 
-    Image exclamationReal;
-    Image exclamationFake;
+    static Image exclamationReal;
+    static Image exclamationFake;
 
     Sound biteReal;
-    Sound biteFake;
-    //0 - trash
-    //1 - minor fish
-    //2 - mediocre fish
-    //3 - large fish
-    //4 - mythic fish
-    //5 - RNGesus fish
+    static Sound biteFake;
 
-    public Fish(int score) throws SlickException {
-        qualScore = score;
-        exclamationReal=new Image("data/assets/images/VisualCueReal");
+    public static boolean distractionActive = false;
+    private static long distractionEndTime = 0;
+    private static long lastDistractionRoll=0;
+    private static final long DISTRACTION_ROLL_COOLDOWN = 1000;
+    private static final long DISTRACTION_PAUSE_AFTER_SHOW = 1000;
+    // 0 - trash
+    // 1 - minor fish
+    // 2 - mediocre fish
+    // 3 - large fish
+    // 4 - mythic fish
+    // 5 - RNGesus fish
+
+    public Fish() throws SlickException {
+
+        exclamationReal = new Image("data/assets/images/VisualCueReal.png");
+        exclamationFake = new Image("data/assets/images/VisualCueFake.png");
+
+        biteFake=new Sound("data/assets/audio/biteEffectFake.wav");
+        biteReal=new Sound("data/assets/audio/biteEffectReal.wav");
+
     }
 
     /*
@@ -60,56 +71,108 @@ public class Fish {
      * RNGesus fish - 1%
      */
 
-public static int getFishType(float castScore) {
-    Random rand = new Random();
-    int roll = rand.nextInt(100); // 0-99
+    public static int getFishType(float castScore) {
+        Random rand = new Random();
+        int roll = rand.nextInt(100); // 0-99
 
-    if (castScore >= 0 && castScore < 0.4f) {
-        // 0-0.39: trash - 100%
-        return 0;
-    } else if (castScore >= 0.4f && castScore < 0.5f) {
-        // 0.4-0.49: minor fish - 75%, trash - 25%
-        if (roll < 75) return 1;
-        else return 0;
-    } else if (castScore >= 0.5f && castScore < 0.7f) {
-        // 0.5-0.69: mediocre fish - 50%, minor fish - 30%, trash - 20%
-        if (roll < 50) return 2;
-        else if (roll < 80) return 1;
-        else return 0;
-    } else if (castScore >= 0.7f && castScore < 0.8f) {
-        // 0.7-0.79: large fish - 40%, mediocre fish - 25%, minor fish - 20%, trash - 15%
-        if (roll < 40) return 3;
-        else if (roll < 65) return 2;
-        else if (roll < 85) return 1;
-        else return 0;
-    } else if (castScore >= 0.8f && castScore < 0.95f) {
-        // 0.8-0.94: large fish - 55%, mediocre fish - 35%, minor fish - 9%, mythic fish - 1%
-        if (roll < 55) return 3;
-        else if (roll < 90) return 2;
-        else if (roll < 99) return 1;
-        else return 4;
-    } else if (castScore >= 0.95f && castScore <= 1.0f) {
-        // 0.95 - 1: Mythic fish - 15%, large fish - 30%, mediocre fish - 45%, minor fish - 9%, RNGesus fish - 1%
-        if (roll < 15) return 4;
-        else if (roll < 45) return 3;
-        else if (roll < 90) return 2;
-        else if (roll < 99) return 1;
-        else return 5;
-    } else {
-        // fallback
-        return 0;
-    }
-}
-    public static void playDistraction(){
-        Random r=new Random();
-        int roll=r.nextInt(4);
-        if(roll==1){
-
+        if (castScore >= 0 && castScore < 0.4f) {
+            // 0-0.39: trash - 100%
+            return 0;
+        } else if (castScore >= 0.4f && castScore < 0.5f) {
+            // 0.4-0.49: minor fish - 75%, trash - 25%
+            if (roll < 75)
+                return 1;
+            else
+                return 0;
+        } else if (castScore >= 0.5f && castScore < 0.7f) {
+            // 0.5-0.69: mediocre fish - 50%, minor fish - 30%, trash - 20%
+            if (roll < 50)
+                return 2;
+            else if (roll < 80)
+                return 1;
+            else
+                return 0;
+        } else if (castScore >= 0.7f && castScore < 0.8f) {
+            // 0.7-0.79: large fish - 40%, mediocre fish - 25%, minor fish - 20%, trash -
+            // 15%
+            if (roll < 40)
+                return 3;
+            else if (roll < 65)
+                return 2;
+            else if (roll < 85)
+                return 1;
+            else
+                return 0;
+        } else if (castScore >= 0.8f && castScore < 0.95f) {
+            // 0.8-0.94: large fish - 55%, mediocre fish - 35%, minor fish - 9%, mythic fish
+            // - 1%
+            if (roll < 55)
+                return 3;
+            else if (roll < 90)
+                return 2;
+            else if (roll < 99)
+                return 1;
+            else
+                return 4;
+        } else if (castScore >= 0.95f && castScore <= 1.0f) {
+            // 0.95 - 1: Mythic fish - 15%, large fish - 30%, mediocre fish - 45%, minor
+            // fish - 9%, RNGesus fish - 1%
+            if (roll < 15)
+                return 4;
+            else if (roll < 45)
+                return 3;
+            else if (roll < 90)
+                return 2;
+            else if (roll < 99)
+                return 1;
+            else
+                return 5;
+        } else {
+            // fallback
+            return 0;
         }
     }
 
-    public static void fakeExclamation(Graphics g){
+    public static void playDistraction(Graphics g) {
+    long now = System.currentTimeMillis();
 
+    // Draw distraction if active
+    if (distractionActive) {
+        fakeExclamation(g);
+        if (now > distractionEndTime) {
+            distractionActive = false;
+            lastDistractionRoll = now + DISTRACTION_PAUSE_AFTER_SHOW; // Add pause after showing
+        }
+        return; // Don't roll while active
     }
 
+    // Only roll for a new distraction if not already active and cooldown passed
+    if (now > lastDistractionRoll) {
+        Random r = new Random();
+        int roll = r.nextInt(6); // 1/6% chance per roll to roll a distraction
+        if (roll == 0) {
+            distractionActive = true;
+            distractionEndTime = now + 1000; // show for 1 second
+        }else if(roll==1 && !(mainGame.fishTimer<2)){
+            biteFake.play();
+        }else if(roll==2){
+            int secondroll=r.nextInt(3);
+            if(secondroll==2)
+                mainGame.triggerScreenShake();
+        }else if(roll==3){
+            int secondroll=r.nextInt(6);
+            if(secondroll==3){
+                distractionActive=true;
+                distractionEndTime = now + 1000; // show for 1 second
+                biteFake.play();
+                mainGame.triggerScreenShake();
+            }
+        }
+        lastDistractionRoll = now + DISTRACTION_ROLL_COOLDOWN;
+    }
+}
+
+    public static void fakeExclamation(Graphics g) {
+        g.drawImage(exclamationFake, mainGame.player.hitbox.getX() - 32, mainGame.player.hitbox.getY() - 32);
+    }
 }

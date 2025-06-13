@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.Image;
-
+import java.util.Random;
 
 @SuppressWarnings({ "deprecation" }) // stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
@@ -22,9 +22,9 @@ public class mainGame extends BasicGameState {
    static Fisher player;
    static Bobber bobber;
    static castGame castGame;
-   static fishingMiniGame miniGame;
    static map map;
    static Image cue;
+   static Fish fosh;
 
    // Collections
    ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
@@ -43,6 +43,11 @@ public class mainGame extends BasicGameState {
    static boolean waitingFish = false;
    static boolean fishTimerLatch = false;
    static boolean enterFishMiniGame = false;
+   private static boolean shakeActive = false;
+   private static long shakeEndTime = 0;
+   private static final int SHAKE_AMOUNT = 8; // pixels
+   private static int shakeOffsetX = 0;
+   private static int shakeOffsetY = 0;
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -56,7 +61,8 @@ public class mainGame extends BasicGameState {
       if (!debug)
          bgmusic.loop(1.0f, 0.5f); // loop background music at 50% volume if not in debug
       castGame = new castGame();
-      cue=new Image("data/assets/images/VisualCueReal.png");
+      cue = new Image("data/assets/images/VisualCueReal.png");
+      fosh = new Fish();
    }
 
    // run updates and check inputs every frame
@@ -76,10 +82,24 @@ public class mainGame extends BasicGameState {
 
    // render needed objects every frame
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-      ticker++;
-      if (ticker % 200 == 0) {
-         secondsElapsed++;
+      if (shakeActive) {
+         if (System.currentTimeMillis() > shakeEndTime) {
+            shakeActive = false;
+            shakeOffsetX = 0;
+            shakeOffsetY = 0;
+         } else {
+            shakeOffsetX = (int) (Math.random() * SHAKE_AMOUNT * 2) - SHAKE_AMOUNT;
+            shakeOffsetY = (int) (Math.random() * SHAKE_AMOUNT * 2) - SHAKE_AMOUNT;
+         }
+      } else {
+         shakeOffsetX = 0;
+         shakeOffsetY = 0;
       }
+
+      g.translate(shakeOffsetX, shakeOffsetY);
+
+      ticker++;
+
       Input input = gc.getInput();
       mouseX = input.getMouseX();
       mouseY = input.getMouseY();
@@ -100,23 +120,28 @@ public class mainGame extends BasicGameState {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
+         if(fishTimer!=0)
+            Fish.playDistraction(g);
+
          if (!fishTimerLatch) {
             castScore = bobber.getQualityScore();
+            Fish.distractionActive = false;
+            currentFishType = Fish.getFishType(castScore);
             debugOutput("Current Fish: " + currentFishType);
             fishTimer = currentFishType * 3 + (int) Math.random() * 5;
             fishTimerLatch = true;
 
-         debugOutput("Cast Score: " + castScore);
+            debugOutput("Cast Score: " + castScore);
+         }
       }
-   }
 
       if (ticker % 200 == 0) {
-         fishTimer -= 1;
-         if (fishTimer == 0) {
-            currentFishType=miniGame.getFishType();
-            enterFishMiniGame = true;
-            fishingMiniGame.startMiniGame();
+         secondsElapsed++;
+         if (!(fishTimer == 0) && (player.idlebobber)) {
+            fishTimer--;
+            debugOutput("Fish Timer: " +fishTimer);
          }
+         
       }
 
       // if debug mode is active, draw a message on screen
@@ -132,8 +157,14 @@ public class mainGame extends BasicGameState {
       castGame.drawGame(g);
 
       player.draw(g);
-      g.drawImage(cue, player.hitbox.getX()-32, player.hitbox.getY()-32);
+      g.resetTransform(); // Reset translation after drawing
 
+   }
+
+   public static void triggerScreenShake() {
+      Random r=new Random();
+      shakeActive = true;
+      shakeEndTime = System.currentTimeMillis()+ 500 + r.nextInt(1000);
    }
 
    // return ID for SBG
