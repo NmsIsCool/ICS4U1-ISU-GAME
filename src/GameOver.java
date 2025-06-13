@@ -4,13 +4,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.UnicodeFont;
+import java.awt.Font;
 
 public class GameOver extends BasicGameState {
     public static Image gameOverScreen;
     public static int finalScore=mainGame.score;
     public static int scoreHung=mainGame.estimScore;
     public static int totalFish=mainGame.cumulativeFish;
-
+    private UnicodeFont Font = new UnicodeFont(new Font("Arial", 1, 12));
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         gameOverScreen=new Image("data/assets/images/gameOverImage.png");
     }

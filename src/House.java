@@ -33,7 +33,6 @@ public class House extends BasicGameState {
    }
    }
 
-   @SuppressWarnings("deprecation")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       map.draw(640,256);
       if (mainGame.debug && !(mainGame.debugCode == 1)) { // draw grid if debug mode is active
@@ -44,7 +43,7 @@ public class House extends BasicGameState {
       mainGame.player.draw(g);
       map.showKeyPoints(g);
       if(mainGame.player.isHitting(shopkeep.getInteractBox()) || mainGame.player.isHitting(map.getKeyPoints()))
-         mainGame.ttf.drawString(mainGame.player.getX()-32, mainGame.player.getY()-24, "Press E to Interact", Color.black);
+         mainGame.standardFont.drawString(mainGame.player.getX()-32, mainGame.player.getY()-24, "Press E to Interact", Color.black);
    }
 
    public int getID() {

@@ -16,7 +16,6 @@ public class Bobber {
     // bobber constructor, just makes the image
     public Bobber() throws SlickException {
         bobberImage = new Image("data/assets/images/bobber.png");
-
     }
 
     // draw bobber and fishing line - line position is determined by player

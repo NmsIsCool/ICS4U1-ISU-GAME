@@ -7,16 +7,16 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.Image;
 import java.util.Random;
+import org.newdawn.slick.UnicodeFont;
+import java.awt.Font;
 
-@SuppressWarnings({ "deprecation" }) // stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
    // Fonts
-   private TrueTypeFont debugFont = new TrueTypeFont(new java.awt.Font("Arial", 1, 12), true);
-   static TrueTypeFont ttf = new TrueTypeFont(new java.awt.Font("Arial", 3, 16), true);
+   private UnicodeFont debugFont = new UnicodeFont(new Font("Arial", Font.PLAIN, 12));
+   static UnicodeFont standardFont = new UnicodeFont(new Font("Arial", Font.PLAIN, 16));
 
    // Game objects
    static Fisher player;
@@ -141,7 +141,7 @@ public class mainGame extends BasicGameState {
       }
 
       if (player.isHitting(map.getKeyPoints()))
-         ttf.drawString(player.getX() - 48, player.getY() - 24, "Press E to Interact", Color.black);
+         standardFont.drawString(player.getX() - 48, player.getY() - 24, "Press E to Interact", Color.black);
 
       if (player.casting) {
          bobber.draw(g);
