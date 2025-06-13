@@ -25,6 +25,7 @@ public class mainGame extends BasicGameState {
    static map map;
    static Image cue;
    static Fish fosh;
+   static Image fishPopUp;
 
    // Collections
    ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
@@ -38,16 +39,39 @@ public class mainGame extends BasicGameState {
    static int ticker = 0;
    static int secondsElapsed = 0;
    static int currentFishType;
-   static int fishTimer;
+   static int fishTimer = -1; // placeholder value to prevent repeated execution of one time operations
    static int globalTimer;
    static boolean waitingFish = false;
    static boolean fishTimerLatch = false;
    static boolean enterFishMiniGame = false;
    private static boolean shakeActive = false;
    private static long shakeEndTime = 0;
-   private static final int SHAKE_AMOUNT = 8; // pixels
+   private static final int SHAKE_AMOUNT = 8; // pixel to translate everything by during screen shake
    private static int shakeOffsetX = 0;
    private static int shakeOffsetY = 0;
+   public static boolean fishOnLine = false;
+   public static long cueStart = 0;
+   public static int fishOnHand = 0;
+   public static int score = 0;
+   public static double multiplier = 1; // multiplier will be 1/10 of current fish on hand0
+   public static int estimScore = 0;
+   public static float fishAlpha = 1f;
+   public static boolean showFishPopUp = false;
+   private static long fishPopUpStartTime = 0;
+   private static final long FISH_POPUP_DURATION = 1000; // 1 second
+   public static boolean stoppedBobber=false;
+   public static long elapsedMillis=0;
+   public static final long TIME_LIMIT_MILLIS=180000;
+   public static long timeLeft=0;
+   public static int cumulativeFish=0;
+
+   // store fish types
+   public static int trash = 0;
+   public static int minor = 0;
+   public static int mediocre = 0;
+   public static int large = 0;
+   public static int mythic = 0;
+   public static int rng = 0;
 
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -63,15 +87,13 @@ public class mainGame extends BasicGameState {
       castGame = new castGame();
       cue = new Image("data/assets/images/VisualCueReal.png");
       fosh = new Fish();
+      fishPopUp = new Image("data/assets/images/icon.png");
    }
 
    // run updates and check inputs every frame
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
       player.move(in, barriers);
-
-      // get memory while debug mode active for ensuring memory usage is in check.
-      // Should rarely be an issue.
       castGame.update();
 
       if (player.isHitting(map.getKeyPoints()) && in.isKeyPressed(Input.KEY_E)) {
@@ -82,6 +104,11 @@ public class mainGame extends BasicGameState {
 
    // render needed objects every frame
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+      elapsedMillis=System.currentTimeMillis();
+      timeLeft=TIME_LIMIT_MILLIS-elapsedMillis;
+      if(elapsedMillis>=TIME_LIMIT_MILLIS){
+
+      }
       if (shakeActive) {
          if (System.currentTimeMillis() > shakeEndTime) {
             shakeActive = false;
@@ -120,15 +147,16 @@ public class mainGame extends BasicGameState {
          bobber.draw(g);
       } else if (player.idlebobber) {
          bobber.draw(g);
-         if(fishTimer!=0)
+         if (fishTimer != 0)
             Fish.playDistraction(g);
 
          if (!fishTimerLatch) {
+            Fish.catchCueAudioLatch = true;
             castScore = bobber.getQualityScore();
             Fish.distractionActive = false;
             currentFishType = Fish.getFishType(castScore);
             debugOutput("Current Fish: " + currentFishType);
-            fishTimer = currentFishType * 3 + (int) Math.random() * 5;
+            fishTimer = (currentFishType + 1) * 3 + (int) Math.random() * 5;
             fishTimerLatch = true;
 
             debugOutput("Cast Score: " + castScore);
@@ -139,9 +167,85 @@ public class mainGame extends BasicGameState {
          secondsElapsed++;
          if (!(fishTimer == 0) && (player.idlebobber)) {
             fishTimer--;
-            debugOutput("Fish Timer: " +fishTimer);
+            debugOutput("Fish Timer: " + fishTimer);
          }
-         
+
+      }
+      Fish.catchFish(g);
+
+      if (fishOnLine)
+         debugOutput("Fish Window");
+      if ((input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fishOnLine) || stoppedBobber) { // Logic controlling when a fish is caught
+         debugOutput("Caught A Fish!");
+         fishOnLine = false;
+         fishOnHand++;
+         cumulativeFish++;
+         showFishPopUp = true;
+         fishPopUpStartTime = System.currentTimeMillis();
+
+         multiplier += fishOnHand / 10;
+         switch (currentFishType) { // add numbers of each fish type for score purposes
+            case 0:
+               trash++;
+               estimScore += multiplier * 1;
+               break;
+            case 1:
+               minor++;
+               estimScore += multiplier * 3;
+               break;
+            case 2:
+               mediocre++;
+               estimScore += multiplier * 5;
+               break;
+            case 3:
+               large++;
+               estimScore += multiplier * 10;
+               break;
+            case 4:
+               mythic++;
+               estimScore += multiplier * 15;
+               break;
+            case 5:
+               rng++;
+               estimScore += multiplier * 25;
+               break;
+            default:
+               trash++;
+               estimScore += multiplier * 1;
+               break;
+         }
+         /*
+          * SCORE TABLE
+          * trash - +1
+          * minor - +3
+          * mediocre - +5
+          * large - +10
+          * mythic - +15
+          * RNGesus - +25
+          */
+          stoppedBobber=false;
+      }
+
+      if (showFishPopUp) {
+         long elapsed = System.currentTimeMillis() - fishPopUpStartTime;
+         float alpha = 1.0f - (float) elapsed / FISH_POPUP_DURATION;
+         if (alpha < 0f)
+            alpha = 0f;
+
+         g.setColor(new Color(1f, 1f, 1f, alpha));
+         g.drawImage(fishPopUp, player.hitbox.getX() - 32, player.hitbox.getY() - 32); // Use your desired coordinates
+         g.setColor(Color.white);
+
+         if (elapsed >= FISH_POPUP_DURATION) {
+            showFishPopUp = false;
+         }
+      }
+
+      if (fishTimer == 0) {
+         cueStart = System.currentTimeMillis();
+         Fish.fishLineEndTime = cueStart + Fish.FISH_ON_LINE_TIME;
+         fishOnLine = true;
+         fishTimer = -1; // placeholder value to prevent constant execution
       }
 
       // if debug mode is active, draw a message on screen
@@ -162,9 +266,9 @@ public class mainGame extends BasicGameState {
    }
 
    public static void triggerScreenShake() {
-      Random r=new Random();
+      Random r = new Random();
       shakeActive = true;
-      shakeEndTime = System.currentTimeMillis()+ 500 + r.nextInt(1000);
+      shakeEndTime = System.currentTimeMillis() + 500 + r.nextInt(1000);
    }
 
    // return ID for SBG

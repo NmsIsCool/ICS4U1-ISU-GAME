@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Line;
 
-@SuppressWarnings("unused")
 public class Bobber {
     int x = 0;
     int y = 0;
@@ -25,13 +24,13 @@ public class Bobber {
     public void draw(Graphics g) throws SlickException {
         playerX = mainGame.player.getX();
         playerY = mainGame.player.getY();
-        //output bobber position
-        //mainGame.debugOutput("Bobber Position: " + x + ", " + y);
+        // output bobber position
+        // mainGame.debugOutput("Bobber Position: " + x + ", " + y);
         g.drawImage(bobberImage, x, y);
-        
-        //make fishing line color black during gameplay, red whilst debugging
-        if(!mainGame.debug)
-            g.setColor(Color.black); 
+
+        // make fishing line color black during gameplay, red whilst debugging
+        if (!mainGame.debug)
+            g.setColor(Color.black);
         else
             g.setColor(Color.red);
         // adjust fishing line position to align with sprite in each direction
@@ -55,10 +54,10 @@ public class Bobber {
     public void calculateCast() {
         x = mainGame.player.getX();
         y = mainGame.player.getY() + 24;
-        if(mainGame.castGame.tickerpercent<=20)
-            vel=21;
+        if (mainGame.castGame.tickerpercent <= 20)
+            vel = 21;
         else
-            vel= (mainGame.castGame.tickerpercent)/1.1f; // get velocity from cast game ticker
+            vel = (mainGame.castGame.tickerpercent) / 1.1f; // get velocity from cast game ticker
         dir = mainGame.player.getDir();
 
         toAddY = 0;
@@ -79,14 +78,14 @@ public class Bobber {
         }
         x += toAddX;
         y += toAddY;
-        if(y>992)
-            y=992;
+        if (y > 992)
+            y = 992;
         vel = 0;
     }
 
-    //set bobber velocity
-    public void setVel(int newVel){
-        vel=newVel;
+    // set bobber velocity
+    public void setVel(int newVel) {
+        vel = newVel;
     }
 
     // get distance between bobber and player, used to calculate quality score
@@ -109,7 +108,7 @@ public class Bobber {
     public float getQualityScore() {
         // quality score is calculated as a percentage of the distance covered between
         // the edge of the dock and the edge of the map left as a decimal
-        if (calculateDistance()/ getDistanceFromPlayerToLowerEdge() > 1) {
+        if (calculateDistance() / getDistanceFromPlayerToLowerEdge() > 1) {
             return 1;
         } else {
             return (float) (calculateDistance() / getDistanceFromPlayerToLowerEdge());
@@ -117,10 +116,9 @@ public class Bobber {
 
     }
 
-    //method to get distance from player to lower edge of the map (1920x1088)
+    // method to get distance from player to lower edge of the map (1920x1088)
     public static int getDistanceFromPlayerToLowerEdge() {
         return GameInit.SCREEN_HEIGHT - (mainGame.player.getY() + 64);
     }
-    
 
 }
