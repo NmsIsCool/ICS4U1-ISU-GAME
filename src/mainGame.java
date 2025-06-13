@@ -9,6 +9,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.Music;
+import org.newdawn.slick.Image;
+
 
 @SuppressWarnings({ "deprecation" }) // stop compiler from throwing warnings for deprecated libraries
 public class mainGame extends BasicGameState {
@@ -21,6 +23,7 @@ public class mainGame extends BasicGameState {
    static Bobber bobber;
    static castGame castGame;
    static map map;
+   static Image cue;
 
    // Collections
    ArrayList<Rectangle> barriers = new ArrayList<>(); // movement restricting barriers
@@ -56,6 +59,7 @@ public class mainGame extends BasicGameState {
       if (!debug)
          bgmusic.loop(1.0f, 0.5f); // loop background music at 50% volume if not in debug
       castGame = new castGame();
+      cue=new Image("data/assets/images/VisualCueReal.png");
    }
 
    // run updates and check inputs every frame
@@ -94,10 +98,7 @@ public class mainGame extends BasicGameState {
 
       if (player.isHitting(map.getKeyPoints()))
          ttf.drawString(player.getX() - 48, player.getY() - 24, "Press E to Interact", Color.black);
-
-      if (player.casting) {
-         bobber.draw(g);
-      } else if (player.idlebobber) {
+       if (player.idlebobber) {
          bobber.draw(g);
          if (!fishTimerLatch) {
             castScore = bobber.getQualityScore();
@@ -143,6 +144,7 @@ public class mainGame extends BasicGameState {
       castGame.drawGame(g);
 
       player.draw(g);
+      g.drawImage(cue, player.hitbox.getX()-32, player.hitbox.getY()-32);
 
    }
 

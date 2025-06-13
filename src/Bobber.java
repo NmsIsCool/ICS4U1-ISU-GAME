@@ -119,7 +119,7 @@ public class Bobber {
 
     //method to get distance from player to lower edge of the map (1920x1088)
     public static int getDistanceFromPlayerToLowerEdge() {
-        return 1088 - (mainGame.player.getY() + 64);
+        return GameInit.SCREEN_HEIGHT - (mainGame.player.getY() + 64);
     }
     
 

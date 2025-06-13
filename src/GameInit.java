@@ -6,7 +6,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameInit extends StateBasedGame {
 
     public static final int SCREEN_WIDTH = 1920;
-    public static final int SCREEN_HEIGHT = 1080;
+    public static final int SCREEN_HEIGHT = 1040;
     public static final int FRAME_RATE = 200;
 
     public GameInit(String title) {

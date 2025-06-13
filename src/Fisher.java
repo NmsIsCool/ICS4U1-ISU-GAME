@@ -21,7 +21,7 @@ public class Fisher {
     int dir = 3; // 0=U, 1=L, 2=D, 3=R;
     boolean stop = false, stopcast = true;
     boolean running = false;
-    private Rectangle hitbox;
+    public Rectangle hitbox;
     public boolean casting = false, holdingcast = false, idlebobber = false;
     public float varyDist = 0;
 
@@ -90,35 +90,35 @@ public class Fisher {
         int x = (int) hitbox.getX();
         int y = (int) hitbox.getY();
         int origx = x, origy = y;
-        if (!mainGame.enterFishMiniGame) {
-            if (kb.isKeyDown(Input.KEY_LSHIFT) && mainGame.debug) {
-                running = true;
-                dx = 2;
-            } else {
-                dx = 1;
-                running = false;
-            }
-            // control movement while not holding cast
-            if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
-                x += dx;
-                dir = 3;
-            } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
-                x -= dx;
-                dir = 1;
-            } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
-                y -= dx;
-                dir = 0;
-            } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
-                y += dx;
-                dir = 2;
-            } else {
-                stop = true;
-            }
 
-            if ((!kb.isKeyDown(Input.KEY_D) && !kb.isKeyDown(Input.KEY_A) && !kb.isKeyDown(Input.KEY_W) && !kb.isKeyDown(Input.KEY_S))
+        if (kb.isKeyDown(Input.KEY_LSHIFT) && mainGame.debug) {
+            running = true;
+            dx = 2;
+        } else {
+            dx = 1;
+            running = false;
+        }
+        // control movement while not holding cast
+        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
+            x += dx;
+            dir = 3;
+        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
+            x -= dx;
+            dir = 1;
+        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
+            y -= dx;
+            dir = 0;
+        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
+            y += dx;
+            dir = 2;
+        } else {
+            stop = true;
+        }
+
+        if ((!kb.isKeyDown(Input.KEY_D) && !kb.isKeyDown(Input.KEY_A) && !kb.isKeyDown(Input.KEY_W)
+                && !kb.isKeyDown(Input.KEY_S))
                 || holdingcast || idlebobber || casting) {
-                stop = true;
-            }
+            stop = true;
         }
 
         hitbox.setX(x);
@@ -137,10 +137,11 @@ public class Fisher {
             mainGame.fishTimerLatch = false;
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if
                                                                             // key space is not held and cast is being
-                                                                            // held,
+            idlebobber=true;                                                                // held,
             holdingcast = false; // play cast animation at frame 3 and set bobber to idle
             stopcast = false;
             casting = true;
+            
             mainGame.fishTimerLatch = false;
             varyDist = (float) Math.random() * 10;
             castAnim[dir].restart();
@@ -165,9 +166,14 @@ public class Fisher {
             stopcast = true;
             castAnim[dir].stop();
             idleImage[dir].draw(x, y);
-            mainGame.fishTimerLatch=false;
-            mainGame.enterFishMiniGame=false;
+            mainGame.fishTimerLatch = false;
+            mainGame.enterFishMiniGame = false;
             mainGame.debugOutput("Bobber Stopped");
+        }
+
+        if (casting && castAnim[dir].getFrame() == 9) {
+            casting = false;
+            idlebobber = true;
         }
 
     }
@@ -223,10 +229,6 @@ public class Fisher {
             // If player is casting, draw casting animation and wait for it to end
         } else if (stop && !stopcast) {
             castAnim[dir].draw(drawX - 32, drawY - 32);
-            if (castAnim[dir].getFrame() == 9) { // Check if it's on the last frame
-                casting = false;
-                idlebobber = true;
-            }
             // If player is idle with the bobber, draw the idle bobber frame
         } else if (idlebobber && stop) {
             if (idlebobber) {
@@ -240,8 +242,6 @@ public class Fisher {
             walkAnim[dir].stop();
             idleImage[dir].draw(drawX, drawY);
         }
-
-        
 
         if (mainGame.debug) {
             g.draw(hitbox);
