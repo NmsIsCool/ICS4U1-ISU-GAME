@@ -11,38 +11,31 @@ public class Fish {
     static Image exclamationReal;
     static Image exclamationFake;
 
-    static Sound biteReal;
+    Sound biteReal;
     static Sound biteFake;
 
     public static boolean distractionActive = false;
     private static long distractionEndTime = 0;
-    private static long lastDistractionRoll = 0;
+    private static long lastDistractionRoll=0;
     private static final long DISTRACTION_ROLL_COOLDOWN = 1000;
     private static final long DISTRACTION_PAUSE_AFTER_SHOW = 1000;
-
-    public static final long FISH_ON_LINE_TIME = 650; // 1000ms
-    public static long fishLineEndTime;
-
-    public static boolean catchCueAudioLatch=true;
-    
-
-    public Fish() throws SlickException {
-
-        exclamationReal = new Image("data/assets/images/VisualCueReal.png");
-        exclamationFake = new Image("data/assets/images/VisualCueFake.png");
-
-        biteFake = new Sound("data/assets/audio/biteEffectFake.wav");
-        biteReal = new Sound("data/assets/audio/biteEffectReal.wav");
-
-    }
-
-
     // 0 - trash
     // 1 - minor fish
     // 2 - mediocre fish
     // 3 - large fish
     // 4 - mythic fish
     // 5 - RNGesus fish
+
+    public Fish() throws SlickException {
+
+        exclamationReal = new Image("data/assets/images/VisualCueReal.png");
+        exclamationFake = new Image("data/assets/images/VisualCueFake.png");
+
+        biteFake=new Sound("data/assets/audio/biteEffectFake.wav");
+        biteReal=new Sound("data/assets/audio/biteEffectReal.wav");
+
+    }
+
     /*
      * Table to determine quality based off of distance score.
      * 
@@ -78,16 +71,6 @@ public class Fish {
      * RNGesus fish - 1%
      */
 
-     //SCORE TABLE
-     /*
-      trash - +1
-      minor - +3
-      mediocre - +5
-      large - +10
-      mythic - +15
-      RNGesus - +25
-      */
-    
     public static int getFishType(float castScore) {
         Random rand = new Random();
         int roll = rand.nextInt(100); // 0-99
@@ -151,65 +134,45 @@ public class Fish {
     }
 
     public static void playDistraction(Graphics g) {
-        long now = System.currentTimeMillis();
+    long now = System.currentTimeMillis();
 
-        // Draw distraction if active
-        if (distractionActive) {
-            fakeExclamation(g);
-            if (now > distractionEndTime) {
-                distractionActive = false;
-                lastDistractionRoll = now + DISTRACTION_PAUSE_AFTER_SHOW; // Add pause after showing
-            }
-            return; // Don't roll while active
+    // Draw distraction if active
+    if (distractionActive) {
+        fakeExclamation(g);
+        if (now > distractionEndTime) {
+            distractionActive = false;
+            lastDistractionRoll = now + DISTRACTION_PAUSE_AFTER_SHOW; // Add pause after showing
         }
+        return; // Don't roll while active
+    }
 
-        // Only roll for a new distraction if not already active and cooldown passed
-        if (now > lastDistractionRoll) {
-            Random r = new Random();
-            int roll = r.nextInt(6); // 1/6% chance per roll to roll a distraction
-            if (roll == 0 && !(mainGame.fishTimer < 2)) {
-                distractionActive = true;
+    // Only roll for a new distraction if not already active and cooldown passed
+    if (now > lastDistractionRoll) {
+        Random r = new Random();
+        int roll = r.nextInt(6); // 1/6% chance per roll to roll a distraction
+        if (roll == 0) {
+            distractionActive = true;
+            distractionEndTime = now + 1000; // show for 1 second
+        }else if(roll==1 && !(mainGame.fishTimer<2)){
+            biteFake.play();
+        }else if(roll==2){
+            int secondroll=r.nextInt(3);
+            if(secondroll==2)
+                mainGame.triggerScreenShake();
+        }else if(roll==3){
+            int secondroll=r.nextInt(6);
+            if(secondroll==3){
+                distractionActive=true;
                 distractionEndTime = now + 1000; // show for 1 second
-            } else if (roll == 1 && !(mainGame.fishTimer < 2)) {
                 biteFake.play();
-            } else if (roll == 2) {
-                int secondroll = r.nextInt(3);
-                if (secondroll == 2)
-                    mainGame.triggerScreenShake();
-            } else if (roll == 3) {
-                int secondroll = r.nextInt(6);
-                if (secondroll == 3) {
-                    distractionActive = true;
-                    distractionEndTime = now + 1000; // show for 1 second
-                    biteFake.play();
-                    mainGame.triggerScreenShake();
-                }
-            }
-            lastDistractionRoll = now + DISTRACTION_ROLL_COOLDOWN;
-        }
-    }
-
-    public static void catchFish(Graphics g) {
-        long now = System.currentTimeMillis();
-        if (mainGame.fishOnLine) {
-            realCatchCue(g);
-            if (now > fishLineEndTime) {
-                mainGame.fishOnLine = false;
+                mainGame.triggerScreenShake();
             }
         }
-
+        lastDistractionRoll = now + DISTRACTION_ROLL_COOLDOWN;
     }
+}
 
     public static void fakeExclamation(Graphics g) {
         g.drawImage(exclamationFake, mainGame.player.hitbox.getX() - 32, mainGame.player.hitbox.getY() - 32);
-    }
-
-    public static void realCatchCue(Graphics g) {
-        
-        if (catchCueAudioLatch) {
-            biteReal.play();
-            catchCueAudioLatch = false;
-        }
-        g.drawImage(exclamationReal, mainGame.player.hitbox.getX() - 32, mainGame.player.hitbox.getY() - 32);
     }
 }
