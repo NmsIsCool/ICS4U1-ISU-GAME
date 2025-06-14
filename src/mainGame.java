@@ -10,13 +10,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.Image;
 import java.util.Random;
-import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.TrueTypeFont;
 import java.awt.Font;
 
 public class mainGame extends BasicGameState {
    // Fonts
-   private UnicodeFont debugFont = new UnicodeFont(new Font("Arial", Font.PLAIN, 12));
-   static UnicodeFont standardFont = new UnicodeFont(new Font("Arial", Font.PLAIN, 16));
+   private TrueTypeFont debugFont = new TrueTypeFont(new Font("Impact", Font.PLAIN, 12), true);
+   static TrueTypeFont standardFont = new TrueTypeFont(new Font("Impact", Font.PLAIN, 16), true);
 
    // Game objects
    static Fisher player;
