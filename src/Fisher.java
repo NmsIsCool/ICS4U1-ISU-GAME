@@ -2,7 +2,6 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.*;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 public class Fisher {
 
     // declare variables/objects
@@ -169,6 +168,8 @@ public class Fisher {
             mainGame.fishTimerLatch = false;
             mainGame.enterFishMiniGame = false;
             mainGame.debugOutput("Bobber Stopped");
+            mainGame.stoppedBobber=true;
+
         }
 
         if (casting && castAnim[dir].getFrame() == 9) {
