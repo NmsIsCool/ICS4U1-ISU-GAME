@@ -13,10 +13,11 @@ import java.util.Random;
 import org.newdawn.slick.TrueTypeFont;
 import java.awt.Font;
 
+@SuppressWarnings("deprecation")
 public class mainGame extends BasicGameState {
    // Fonts
-   private TrueTypeFont debugFont = new TrueTypeFont(new Font("Impact", Font.PLAIN, 12), true);
-   static TrueTypeFont standardFont = new TrueTypeFont(new Font("Impact", Font.PLAIN, 16), true);
+   private TrueTypeFont debugFont = new TrueTypeFont(new Font("Serif", Font.PLAIN, 12), true);
+   static TrueTypeFont standardFont = new TrueTypeFont(new Font("Serif", Font.PLAIN, 16), true);
 
    // Game objects
    static Fisher player;
