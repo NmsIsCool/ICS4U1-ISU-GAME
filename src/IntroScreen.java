@@ -23,6 +23,9 @@ public class IntroScreen extends BasicGameState {
             mainGame.debug=true;
             sbg.enterState(20);
        }
+
+       if(in.isKeyPressed(Input.KEY_PERIOD))
+        sbg.enterState(22);
         
     }
 
