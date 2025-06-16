@@ -8,15 +8,18 @@ import org.newdawn.slick.geom.Rectangle;
 
 @SuppressWarnings({ "deprecation" })
 public class map {
+    //declare and init collections/objects
     ArrayList<Rectangle> barriers = new ArrayList<>(); // Movement restricting barriers
     ArrayList<Rectangle> keyPoints = new ArrayList<>(); // key points for screen transition points
     private TrueTypeFont gridFont = new TrueTypeFont(new java.awt.Font("Arial", 1, 12), true);
     Image mapImage;
 
+    //map constructor, sets map image to supplied path
     public map(String mapPath) throws SlickException {
         mapImage = new Image(mapPath);
     }
 
+    //initialize outside barriers
     public void initBarriersOutside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
 
@@ -57,12 +60,14 @@ public class map {
         }
     }
 
+    //initialize state transition points for the outside
     public void initKeyPointsOutside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
             makeKey(75, 210, 110, 20);
         }
     }
 
+    //initialize barriers for inside
     public void initBarriersInside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
             makeBarrier(576, 192, 64 * 11, 64 * 3);
@@ -74,20 +79,24 @@ public class map {
         }
     }
 
+    //initialize state transtition points for the inside
     public void initKeyPointsInside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
             makeKey(832, 640, 64 * 3, 64);
         }
     }
 
+    //draw map image
     public void draw() throws SlickException {
         mapImage.draw(0, 0);
     }
 
+    //overload draw to allow for specified draw positions
     public void draw(int x, int y) throws SlickException {
         mapImage.draw(x, y);
     }
 
+    //draw position grids while debugging
     public void grid(Graphics g) throws SlickException {
         g.setColor(Color.red);
 
@@ -100,6 +109,7 @@ public class map {
         }
     }
 
+    //draw the barriers while debugging
     public void showBarriers(Graphics g) {
         if (mainGame.debug && !(mainGame.debugCode == 1)) {
             g.setColor(Color.blue);
@@ -109,6 +119,7 @@ public class map {
         }
     }
 
+    //render state transition points
     public void showKeyPoints(Graphics g) {
         if (mainGame.debug && !(mainGame.debugCode == 1)) {
             g.setColor(Color.yellow);
@@ -125,20 +136,25 @@ public class map {
         barriers.add(new Rectangle(x, y, width, height));
     }
 
+    //overload makeBarrier to allow for float input
     public void makeBarrier(float x, float y, float width, float height) {
 
         barriers.add(new Rectangle(x, y, width, height));
     }
 
+    // i was so tired of writing the full thing so i just made a smaller method for
+    // it
     public void makeKey(int x, int y, int width, int height) {
 
         keyPoints.add(new Rectangle(x, y, width, height));
     }
 
+    //return collision barriers
     public ArrayList<Rectangle> getBarriers() {
         return barriers;
     }
 
+    //return state transition points
     public ArrayList<Rectangle> getKeyPoints() {
         return keyPoints;
     }

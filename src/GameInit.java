@@ -5,6 +5,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameInit extends StateBasedGame {
 
+    //declare screen properties
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1040;
     public static final int FRAME_RATE = 200;
@@ -13,6 +14,7 @@ public class GameInit extends StateBasedGame {
         super(title);
     }
 
+    //initialize game states
     public void initStatesList(GameContainer gc) throws SlickException {
         this.addState(new IntroScreen()); // 0
         this.addState(new mainGame()); // 20
@@ -21,6 +23,7 @@ public class GameInit extends StateBasedGame {
         this.addState(new goi()); // 22
     }
 
+    //start gameContainer app
     public static void main(String args[]) throws SlickException {
 
         GameInit game = new GameInit("Fish Frenzy");
@@ -33,11 +36,13 @@ public class GameInit extends StateBasedGame {
 
     }
 
+    @Deprecated //deprecated get screen size methods
     public static int getDisplayDimensionsX() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return screenSize.width;
     }
 
+    @Deprecated
     public static int getDisplayDimensionsY() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return screenSize.height;

@@ -22,12 +22,14 @@ public class castGame {
     int tickerDir = 1;
     float tickerpercent = 0.0f;
 
+    //constructor for casting minigame, sets x and y positions as well as ticker init value
     public castGame() {
         this.x = mainGame.player.getX() - 32;
         this.y = mainGame.player.getY() - 32;
         ticker = 0;
     }
 
+    //update core values for castGame
     public void update() {
         boolean prevHoldingCast = holdingCast;
         holdingCast = mainGame.player.holdingcast;
@@ -41,6 +43,7 @@ public class castGame {
         }
     }
 
+    //draw cast minigame in proper conditions
     public void drawGame(Graphics g) throws SlickException {
         if (holdingCast) {
             ticker += 1.5f * tickerDir;

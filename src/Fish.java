@@ -5,6 +5,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Sound;
 
 public class Fish {
+
+    //declare variables and objects
     public static int qualScore;
     public int fishType = 0;
 
@@ -34,7 +36,7 @@ public class Fish {
         biteReal = new Sound("data/assets/audio/biteEffectReal.wav");
 
     }
-
+    //Fish quality/integer tables
     // 0 - trash
     // 1 - minor fish
     // 2 - mediocre fish
@@ -86,6 +88,7 @@ public class Fish {
      * RNGesus - +25
      */
 
+     //method returning fish type based on cast score and random chance
     public static int getFishType(float castScore) {
         Random rand = new Random();
         int roll = rand.nextInt(100); // 0-99
@@ -148,6 +151,7 @@ public class Fish {
         }
     }
 
+    //distraction method, play distractions on random roll
     public static void playDistraction(Graphics g) {
         long now = System.currentTimeMillis();
 
@@ -187,6 +191,7 @@ public class Fish {
         }
     }
 
+    //catch fish core loop
     public static void catchFish(Graphics g) {
         long now = System.currentTimeMillis();
         if (mainGame.fishOnLine) {
@@ -198,10 +203,12 @@ public class Fish {
 
     }
 
+    //draw red exclamation mark
     public static void fakeExclamation(Graphics g) {
         g.drawImage(exclamationFake, mainGame.player.hitbox.getX() - 32, mainGame.player.hitbox.getY() - 32);
     }
 
+    //display and run sound for the real catch cue
     public static void realCatchCue(Graphics g) {
 
         if (catchCueAudioLatch) {

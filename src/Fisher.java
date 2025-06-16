@@ -98,16 +98,16 @@ public class Fisher {
             running = false;
         }
         // control movement while not holding cast
-        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting) {
+        if (kb.isKeyDown(Input.KEY_D) && !holdingcast && !idlebobber && !casting && !House.shopkeep.dialogActive) {
             x += dx;
             dir = 3;
-        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting) {
+        } else if (kb.isKeyDown(Input.KEY_A) && !holdingcast && !idlebobber && !casting && !House.shopkeep.dialogActive) {
             x -= dx;
             dir = 1;
-        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting) {
+        } else if (kb.isKeyDown(Input.KEY_W) && !holdingcast && !idlebobber && !casting && !House.shopkeep.dialogActive) {
             y -= dx;
             dir = 0;
-        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting) {
+        } else if (kb.isKeyDown(Input.KEY_S) && !holdingcast && !idlebobber && !casting && !House.shopkeep.dialogActive) {
             y += dx;
             dir = 2;
         } else {
@@ -131,7 +131,7 @@ public class Fisher {
         // allow functionality for holding cast
         // if space is held and bobber not idle, start holding cast
 
-        if (kb.isKeyDown(Input.KEY_SPACE) && !idlebobber) {
+        if (kb.isKeyDown(Input.KEY_SPACE) && !idlebobber && hitbox.getY()>320 ) { //only allow casting when y is >320
             holdingcast = true;
             mainGame.fishTimerLatch = false;
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if
@@ -249,18 +249,22 @@ public class Fisher {
         }
     }
 
+    //return player direction
     public int getDir() {
         return dir;
     }
 
+    //return player hitbox X
     public int getX() {
         return (int) hitbox.getX();
     }
 
+    //return player hitbox Y
     public int getY() {
         return (int) hitbox.getY();
     }
 
+    //set player position to desired X and Y coordinates
     public void setPos(int newX, int newY) {
         if (newX == -1)
             hitbox.setX(hitbox.getX());

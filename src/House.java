@@ -13,6 +13,7 @@ public class House extends BasicGameState {
    Image npcSheet;
    static boolean nearShopkeep;
 
+   //initialize needed objects and collections
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
       map = new map("data/assets/images/shop.png");
       npcSheet = new Image("data/assets/images/npc_walk.png");
@@ -22,6 +23,7 @@ public class House extends BasicGameState {
 
    }
 
+   //update core values and read inputs
    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
       Input in = gc.getInput();
       mainGame.player.move(in, map.getBarriers()); // move player based on input and barriers from map
@@ -34,6 +36,7 @@ public class House extends BasicGameState {
 
    }
 
+   //render game elements and prevent deprecation warnings
    @SuppressWarnings("deprecation")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
       Input in = gc.getInput();

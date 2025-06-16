@@ -75,6 +75,7 @@ public class mainGame extends BasicGameState {
    public static int mythic = 0;
    public static int rng = 0;
 
+   //method to control timer on game startup, only runs when state is first entered
    @Override
    public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
       if (isFirstEnter)
@@ -82,9 +83,8 @@ public class mainGame extends BasicGameState {
       isFirstEnter = false;
    }
 
-   // initialize needed objects
+   // initialize needed objects and call core methods
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-
       player = new Fisher(960, 180);
       bobber = new Bobber();
       map = new map("data/assets/images/map.png");
@@ -111,13 +111,14 @@ public class mainGame extends BasicGameState {
          sbg.enterState(21);
       }
    }
-
+   //method to track time globally while in other states
    public static void trackGlobalTime() {
       elapsedMillis = System.currentTimeMillis() - gameStartTime;
       timeLeft = TIME_LIMIT_MILLIS - elapsedMillis;
       ttf.drawString(10, 90, "Time Remaining: " + timeLeft / 1000 + "s");
    }
 
+   //display score in other states
    public static void dispScore() {
       ttf.drawString(10, 110, "Current Score: " + score);
    }
@@ -194,7 +195,7 @@ public class mainGame extends BasicGameState {
 
       if (fishOnLine)
          debugOutput("Fish Window");
-      if ((input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fishOnLine) || stoppedBobber) { // Logic controlling when a
+      if ((input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fishOnLine) || (stoppedBobber && fishOnLine)) { // Logic controlling when a
                                                                                             // fish is caught
          debugOutput("Caught A Fish!");
          fishOnLine = false;
@@ -245,7 +246,7 @@ public class mainGame extends BasicGameState {
           */
          stoppedBobber = false;
       }
-
+      //logic controlling fish popup when fish caught
       if (showFishPopUp) {
          long elapsed = System.currentTimeMillis() - fishPopUpStartTime;
          float alpha = 1.0f - (float) elapsed / FISH_POPUP_DURATION;
@@ -261,6 +262,7 @@ public class mainGame extends BasicGameState {
          }
       }
 
+      
       if (fishTimer == 0) {
          cueStart = System.currentTimeMillis();
          Fish.fishLineEndTime = cueStart + Fish.FISH_ON_LINE_TIME;
@@ -288,6 +290,7 @@ public class mainGame extends BasicGameState {
 
    }
 
+   //trigger screen shake when called
    public static void triggerScreenShake() {
       Random r = new Random();
       shakeActive = true;

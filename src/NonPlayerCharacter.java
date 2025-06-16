@@ -69,24 +69,26 @@ public class NonPlayerCharacter {
             g.setColor(Color.black);
 
             diaFont.drawString(729, 729, "Lets see what you have here...");
-            if (mainGame.fishOnHand > 0) {
+            if (mainGame.fishOnHand != 0) {
                 diaFont.drawString(665, 729 + 30, "You got " + mainGame.fishOnHand + " fish... not bad...");
                 diaFont.drawString(665, 729 + 60, "Well... add that to this... multiply by the multiplier...");
                 diaFont.drawString(665, 729 + 90, "Carry the one... aaaaand....");
                 diaFont.drawString(655, 729 + 120, "That total to " + mainGame.estimScore + " Score. good work.");
                 diaFont.drawString(655, 729 + 150, "Now get back out there. Catch more fish...");
+                diaFont.drawString(655,729+180,"Click to continue...");
 
                 mainGame.score += mainGame.estimScore;
                 mainGame.fishOnHand = 0;
                 mainGame.multiplier = 1;
                 mainGame.estimScore = 0;
 
-            } else
+            } else if(mainGame.fishOnHand==0)
                 diaFont.drawString(729, 729 + 30, "Zero fish eh? get back out there and catch some, will ya?");
 
         }
     }
 
+    //return NPC interaction box
     public Rectangle getInteractBox() {
         // Return the interaction box of the NPC
         return interactbox;
