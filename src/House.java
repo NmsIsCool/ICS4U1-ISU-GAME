@@ -39,6 +39,10 @@ public class House extends BasicGameState {
    //render game elements and prevent deprecation warnings
    @SuppressWarnings("deprecation")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+      if (mainGame.elapsedMillis >= mainGame.TIME_LIMIT_MILLIS) {
+         sbg.enterState(22);
+      }
+      
       Input in = gc.getInput();
       mainGame.trackGlobalTime();
       mainGame.dispScore();
