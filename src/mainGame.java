@@ -59,11 +59,13 @@ public class mainGame extends BasicGameState {
    public static boolean showFishPopUp = false;
    private static long fishPopUpStartTime = 0;
    private static final long FISH_POPUP_DURATION = 1000; // 1 second
-   public static boolean stoppedBobber=false;
-   public static long elapsedMillis=0;
-   public static final long TIME_LIMIT_MILLIS=180000;
-   public static long timeLeft=0;
-   public static int cumulativeFish=0;
+   public static boolean stoppedBobber = false;
+   public static long elapsedMillis = 0;
+   public static final long TIME_LIMIT_MILLIS = 180000;
+   public static long timeLeft = 180;
+   public static int cumulativeFish = 0;
+   public static long gameStartTime = 0;
+   public static boolean isFirstEnter=true;
 
    // store fish types
    public static int trash = 0;
@@ -73,8 +75,16 @@ public class mainGame extends BasicGameState {
    public static int mythic = 0;
    public static int rng = 0;
 
+   @Override
+   public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
+      if(isFirstEnter)
+         gameStartTime = System.currentTimeMillis();
+         isFirstEnter=false;
+   }
+
    // initialize needed objects
    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+
       player = new Fisher(960, 180);
       bobber = new Bobber();
       map = new map("data/assets/images/map.png");
@@ -102,12 +112,21 @@ public class mainGame extends BasicGameState {
       }
    }
 
+   public static void trackGlobalTime() {
+      elapsedMillis = System.currentTimeMillis() - gameStartTime;
+      timeLeft = TIME_LIMIT_MILLIS - elapsedMillis;
+      ttf.drawString(10, 90, "Time Remaining: " + timeLeft / 1000 + "s");
+   }
+
+   public static void dispScore() {
+      ttf.drawString(10, 110, "Current Score: " + score);
+   }
+
    // render needed objects every frame
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-      elapsedMillis=System.currentTimeMillis();
-      timeLeft=TIME_LIMIT_MILLIS-elapsedMillis;
-      if(elapsedMillis>=TIME_LIMIT_MILLIS){
 
+      if (elapsedMillis >= TIME_LIMIT_MILLIS) {
+         sbg.enterState(22);
       }
       if (shakeActive) {
          if (System.currentTimeMillis() > shakeEndTime) {
@@ -175,7 +194,8 @@ public class mainGame extends BasicGameState {
 
       if (fishOnLine)
          debugOutput("Fish Window");
-      if ((input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fishOnLine) || stoppedBobber) { // Logic controlling when a fish is caught
+      if ((input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && fishOnLine) || stoppedBobber) { // Logic controlling when a
+                                                                                            // fish is caught
          debugOutput("Caught A Fish!");
          fishOnLine = false;
          fishOnHand++;
@@ -223,7 +243,7 @@ public class mainGame extends BasicGameState {
           * mythic - +15
           * RNGesus - +25
           */
-          stoppedBobber=false;
+         stoppedBobber = false;
       }
 
       if (showFishPopUp) {
@@ -233,7 +253,7 @@ public class mainGame extends BasicGameState {
             alpha = 0f;
 
          g.setColor(new Color(1f, 1f, 1f, alpha));
-         g.drawImage(fishPopUp, player.hitbox.getX() - 32, player.hitbox.getY() - 32); // Use your desired coordinates
+         g.drawImage(fishPopUp, player.hitbox.getX() - 32, player.hitbox.getY() - 32);
          g.setColor(Color.white);
 
          if (elapsed >= FISH_POPUP_DURATION) {
@@ -261,7 +281,10 @@ public class mainGame extends BasicGameState {
       castGame.drawGame(g);
 
       player.draw(g);
+
       g.resetTransform(); // Reset translation after drawing
+      trackGlobalTime();
+      dispScore();
 
    }
 
