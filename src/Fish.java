@@ -22,7 +22,7 @@ public class Fish {
     private static final long DISTRACTION_ROLL_COOLDOWN = 1000;
     private static final long DISTRACTION_PAUSE_AFTER_SHOW = 1000;
 
-    public static final long FISH_ON_LINE_TIME = 650; // 1000ms
+    public static final long FISH_ON_LINE_TIME = 1500; // 1000ms
     public static long fishLineEndTime;
 
     public static boolean catchCueAudioLatch = true;
