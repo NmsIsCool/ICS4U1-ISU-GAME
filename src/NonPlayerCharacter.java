@@ -20,6 +20,7 @@ public class NonPlayerCharacter {
     long dialogActivatedTime = 0;
     static final long DIALOG_MIN_DURATION = 500;
     TrueTypeFont diaFont = new TrueTypeFont(new java.awt.Font("Impact", 1, 20), true);
+    boolean talkedTo=false;
 
     // NPC Conctructor, create NPC and idle array from sprite sheets
     public NonPlayerCharacter(Image npcSheet, int x, int y, int dir, boolean nearMe) throws SlickException {
@@ -60,6 +61,9 @@ public class NonPlayerCharacter {
         if (dialogActive && canClose
                 && (in.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) || !nearMe)) {
             dialogActive = false;
+            mainGame.fishOnHand = 0;
+            mainGame.multiplier = 1;
+            mainGame.estimScore = 0;
         }
 
         if (dialogActive) {
@@ -76,11 +80,9 @@ public class NonPlayerCharacter {
                 diaFont.drawString(655, 729 + 120, "That total to " + mainGame.estimScore + " Score. good work.");
                 diaFont.drawString(655, 729 + 150, "Now get back out there. Catch more fish...");
                 diaFont.drawString(655,729+180,"Click to continue...");
-
-                mainGame.score += mainGame.estimScore;
-                mainGame.fishOnHand = 0;
-                mainGame.multiplier = 1;
-                mainGame.estimScore = 0;
+                if(!talkedTo)
+                    mainGame.score += mainGame.estimScore;
+                
 
             } else if(mainGame.fishOnHand==0)
                 diaFont.drawString(729, 729 + 30, "Zero fish eh? get back out there and catch some, will ya?");

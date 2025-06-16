@@ -202,6 +202,7 @@ public class mainGame extends BasicGameState {
          fishOnHand++;
          cumulativeFish++;
          showFishPopUp = true;
+         House.shopkeep.talkedTo=false;
          fishPopUpStartTime = System.currentTimeMillis();
 
          multiplier += fishOnHand / 10;
