@@ -136,11 +136,11 @@ public class Fisher {
             mainGame.fishTimerLatch = false;
         } else if (!kb.isKeyDown(Input.KEY_SPACE) && holdingcast == true) { // when space released, start casting, if
                                                                             // key space is not held and cast is being
-                                                                         // held,
+                                                                            // held,
             holdingcast = false; // play cast animation at frame 3 and set bobber to idle
             stopcast = false;
             casting = true;
-            
+
             mainGame.fishTimerLatch = false;
             varyDist = (float) Math.random() * 10;
             castAnim[dir].restart();
@@ -168,7 +168,7 @@ public class Fisher {
             mainGame.fishTimerLatch = false;
             mainGame.enterFishMiniGame = false;
             mainGame.debugOutput("Bobber Stopped");
-            mainGame.stoppedBobber=true;
+            mainGame.stoppedBobber = true;
 
         }
 

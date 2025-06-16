@@ -32,7 +32,7 @@ public class NonPlayerCharacter {
         }
 
         interactbox = new Rectangle(x - 48, y, 96 - 24, 96);
-        dialogBox = new Rectangle(704-64, 704, 64 * 9, 64 * 3);
+        dialogBox = new Rectangle(704 - 64, 704, 64 * 9, 64 * 3);
         this.dir = dir;
     }
 
@@ -53,7 +53,7 @@ public class NonPlayerCharacter {
         if (nearMe && in.isKeyDown(Input.KEY_E)) {
             dialogActive = true;
             dialogActivatedTime = System.currentTimeMillis();
-            mainGame.debugOutput("IsDiaActive? "+dialogActive);
+            mainGame.debugOutput("IsDiaActive? " + dialogActive);
         }
         boolean canClose = dialogActive && (System.currentTimeMillis() - dialogActivatedTime >= DIALOG_MIN_DURATION);
 

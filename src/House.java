@@ -36,7 +36,7 @@ public class House extends BasicGameState {
 
    @SuppressWarnings("deprecation")
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-      Input in=gc.getInput();
+      Input in = gc.getInput();
       mainGame.trackGlobalTime();
       mainGame.dispScore();
       map.draw(640, 256);
@@ -49,14 +49,16 @@ public class House extends BasicGameState {
       mainGame.player.draw(g);
       map.showKeyPoints(g);
       if (mainGame.player.isHitting(shopkeep.getInteractBox())) {
-         shopkeep.nearMe=true;
-         mainGame.debugOutput("isTouching? " +(mainGame.player.isHitting(shopkeep.getInteractBox())));
-         mainGame.ttf.drawString(mainGame.player.getX() - 32, mainGame.player.getY() - 24, "Press E to Interact", Color.black);
+         shopkeep.nearMe = true;
+         mainGame.debugOutput("isTouching? " + (mainGame.player.isHitting(shopkeep.getInteractBox())));
+         mainGame.ttf.drawString(mainGame.player.getX() - 32, mainGame.player.getY() - 24, "Press E to Interact",
+               Color.black);
       } else
          shopkeep.nearMe = false;
 
       if (mainGame.player.isHitting(map.getKeyPoints()))
-         mainGame.ttf.drawString(mainGame.player.getX() - 32, mainGame.player.getY() - 24, "Press E to Interact", Color.black);
+         mainGame.ttf.drawString(mainGame.player.getX() - 32, mainGame.player.getY() - 24, "Press E to Interact",
+               Color.black);
 
    }
 

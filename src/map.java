@@ -65,18 +65,18 @@ public class map {
 
     public void initBarriersInside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
-            makeBarrier(576,192,64*11,64*3);
-            makeBarrier(576,192,64,64*8);
-            makeBarrier(1216,192,64,64*8);
-            makeBarrier(576,672,64*7.5f,32);
-            makeBarrier(1024,672,64*5,32);
+            makeBarrier(576, 192, 64 * 11, 64 * 3);
+            makeBarrier(576, 192, 64, 64 * 8);
+            makeBarrier(1216, 192, 64, 64 * 8);
+            makeBarrier(576, 672, 64 * 7.5f, 32);
+            makeBarrier(1024, 672, 64 * 5, 32);
 
         }
     }
 
     public void initKeyPointsInside() {
         if (!(mainGame.debugCode == 1)) {// create barriers unless debug code 1 is active
-            makeKey(832,640,64*3,64);
+            makeKey(832, 640, 64 * 3, 64);
         }
     }
 
@@ -84,8 +84,8 @@ public class map {
         mapImage.draw(0, 0);
     }
 
-    public void draw(int x , int y) throws SlickException{
-        mapImage.draw(x , y);
+    public void draw(int x, int y) throws SlickException {
+        mapImage.draw(x, y);
     }
 
     public void grid(Graphics g) throws SlickException {

@@ -65,7 +65,7 @@ public class mainGame extends BasicGameState {
    public static long timeLeft = 180;
    public static int cumulativeFish = 0;
    public static long gameStartTime = 0;
-   public static boolean isFirstEnter=true;
+   public static boolean isFirstEnter = true;
 
    // store fish types
    public static int trash = 0;
@@ -77,9 +77,9 @@ public class mainGame extends BasicGameState {
 
    @Override
    public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-      if(isFirstEnter)
+      if (isFirstEnter)
          gameStartTime = System.currentTimeMillis();
-         isFirstEnter=false;
+      isFirstEnter = false;
    }
 
    // initialize needed objects

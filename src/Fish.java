@@ -23,8 +23,7 @@ public class Fish {
     public static final long FISH_ON_LINE_TIME = 650; // 1000ms
     public static long fishLineEndTime;
 
-    public static boolean catchCueAudioLatch=true;
-    
+    public static boolean catchCueAudioLatch = true;
 
     public Fish() throws SlickException {
 
@@ -35,7 +34,6 @@ public class Fish {
         biteReal = new Sound("data/assets/audio/biteEffectReal.wav");
 
     }
-
 
     // 0 - trash
     // 1 - minor fish
@@ -78,16 +76,16 @@ public class Fish {
      * RNGesus fish - 1%
      */
 
-     //SCORE TABLE
-     /*
-      trash - +1
-      minor - +3
-      mediocre - +5
-      large - +10
-      mythic - +15
-      RNGesus - +25
-      */
-    
+    // SCORE TABLE
+    /*
+     * trash - +1
+     * minor - +3
+     * mediocre - +5
+     * large - +10
+     * mythic - +15
+     * RNGesus - +25
+     */
+
     public static int getFishType(float castScore) {
         Random rand = new Random();
         int roll = rand.nextInt(100); // 0-99
@@ -205,7 +203,7 @@ public class Fish {
     }
 
     public static void realCatchCue(Graphics g) {
-        
+
         if (catchCueAudioLatch) {
             biteReal.play();
             catchCueAudioLatch = false;

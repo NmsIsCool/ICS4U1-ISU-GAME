@@ -17,8 +17,8 @@ public class GameInit extends StateBasedGame {
         this.addState(new IntroScreen()); // 0
         this.addState(new mainGame()); // 20
         this.addState(new Instructions_Gameplay()); // 1
-        this.addState(new House()); //21
-        this.addState(new goi()); //22
+        this.addState(new House()); // 21
+        this.addState(new goi()); // 22
     }
 
     public static void main(String args[]) throws SlickException {
@@ -28,7 +28,7 @@ public class GameInit extends StateBasedGame {
         app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
         app.setShowFPS(true);
         app.setTargetFrameRate(FRAME_RATE);
-        
+
         app.start();
 
     }
@@ -42,6 +42,5 @@ public class GameInit extends StateBasedGame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return screenSize.height;
     }
-
 
 }
