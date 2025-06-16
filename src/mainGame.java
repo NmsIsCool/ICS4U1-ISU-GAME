@@ -61,7 +61,7 @@ public class mainGame extends BasicGameState {
    private static final long FISH_POPUP_DURATION = 1000; // 1 second
    public static boolean stoppedBobber = false;
    public static long elapsedMillis = 0;
-   public static final long TIME_LIMIT_MILLIS = 180000;
+   public static final long TIME_LIMIT_MILLIS = 120000;
    public static long timeLeft = 180;
    public static int cumulativeFish = 0;
    public static long gameStartTime = 0;

@@ -49,3 +49,4 @@ public class GameInit extends StateBasedGame {
     }
 
 }
+//  *******press F5 to play*******
