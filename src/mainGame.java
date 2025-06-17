@@ -123,7 +123,7 @@ public class mainGame extends BasicGameState {
       ttf.drawString(10, 110, "Current Score: " + score);
    }
 
-   // render needed objects every frame
+   // render needed objects every frame as well as run game logic
    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 
       if (elapsedMillis >= TIME_LIMIT_MILLIS) {

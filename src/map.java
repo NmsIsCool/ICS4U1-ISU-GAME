@@ -51,7 +51,7 @@ public class map {
             makeBarrier(1016, 175, 84, 75);
 
             // Misc Houses
-            int deltax = 100;
+            int deltax = 100; //size of each house
             int deltay = 105;
             makeBarrier(1550, 218, deltax, deltay);
             makeBarrier(1550, 25, deltax, deltay);
@@ -91,7 +91,7 @@ public class map {
         mapImage.draw(0, 0);
     }
 
-    //overload draw to allow for specified draw positions
+    //overload draw to allow for specified draw positions, used in House.java
     public void draw(int x, int y) throws SlickException {
         mapImage.draw(x, y);
     }

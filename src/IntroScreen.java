@@ -15,7 +15,7 @@ public class IntroScreen extends BasicGameState {
         introImage = new Image("data/assets/images/intro.png");
     }
 
-    //checl for inputs, set up debugging flags and states
+    //check for inputs, set up debugging flags and states
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         Input in = gc.getInput();
         if (in.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) { //default game run

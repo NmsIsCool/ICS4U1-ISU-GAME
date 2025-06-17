@@ -244,6 +244,7 @@ public class Fisher {
             idleImage[dir].draw(drawX, drawY);
         }
 
+        //draw hitbox in debug mode
         if (mainGame.debug) {
             g.draw(hitbox);
         }
